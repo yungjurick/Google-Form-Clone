@@ -30,11 +30,18 @@ const FormsEdit = () => {
   const onClickPanelButton = buttonType => {
     switch(buttonType) {
       case 'add':
-        console.log('Add Question')
+        const newQuestion = createDefaultQuestion();
+        onAddQuestion(newQuestion);
         return;
       default:
         return;
     }
+  }
+
+  const onAddQuestion = (data) => {
+    const cp = [...questions];
+    cp.push(data);
+    setQuestions(cp);
   }
 
   const onChangeQuestion = (questionUid, data) => {
