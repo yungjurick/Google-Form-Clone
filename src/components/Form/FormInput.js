@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const FormInput = ({ size, target, value, handleOnChangeText }) => {
+const FormInput = ({ size, target, value, handleOnChangeQuestion }) => {
 
   // Form Input Logic
   const textareaRef = useRef(null);
@@ -28,11 +28,14 @@ const FormInput = ({ size, target, value, handleOnChangeText }) => {
         return 'Form Subtitle';
       case 'question-title':
         return 'Question Title';
+      case 'question-subtitle':
+        return 'Question Subtitle';
       default:
         return '';
     }
   }
 
+  const inputTarget = target.split('-');
 
   useEffect(() => {
     if (textareaRef) {
@@ -42,14 +45,15 @@ const FormInput = ({ size, target, value, handleOnChangeText }) => {
   }, [value, size])
 
   return (
-    <FormInputWrapper>
+    <FormInputWrapper
+      inputTarget={inputTarget}
+    >
       <FormInputTextarea
         ref={textareaRef}
         size={size}
-        target={target}
         value={value}
         placeholder={textareaPlaceholder(target)}
-        onChange={e => handleOnChangeText('title', e)}
+        onChange={e => handleOnChangeQuestion(inputTarget[1], e.target.value)}
         onFocus={e => setIsFocused(true)}
         onBlur={e => setIsFocused(false)}
       />
@@ -60,11 +64,15 @@ const FormInput = ({ size, target, value, handleOnChangeText }) => {
 }
 
 const FormInputWrapper = styled.div`
+  flex: 1;
   width: 100%;
   position: relative;
   & + & {
     margin-top: 8px;
   }
+  border-radius: 4px 4px 0 0;
+  background-color: ${props => props.inputTarget[0] === 'question' && props.inputTarget[1] === 'title' ? 'rgb(248,249,250)' : 'transparent' };
+  padding: ${props => props.inputTarget[0] === 'question' && props.inputTarget[1] === 'title' ? '16px' : '0' };
 `
 
 const FormInputTextarea = styled.textarea`
@@ -74,9 +82,9 @@ const FormInputTextarea = styled.textarea`
       case 'large':
         return '32px';
       case 'medium':
-        return '14px';
+        return '16px';
       case 'small':
-        return '12px';
+        return '14px';
       default:
         return '12px';
     }
