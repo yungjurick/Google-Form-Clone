@@ -13,8 +13,6 @@ const FormsNavBar = () => {
     push(`/forms/${formUid}/${status}`)
   }
 
-  console.log(location);
-
   return (
     <NavBarContainer>
       <NavBarRow></NavBarRow>

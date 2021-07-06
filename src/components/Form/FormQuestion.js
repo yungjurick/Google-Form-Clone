@@ -19,11 +19,8 @@ const FormQuestion = ({
   const options = (questionData.options || []);
 
   const handleOnChangeQuestion = (data) => {
-    console.log("Form Questions - On Change Question", uuid, data);
     onChangeQuestion(uuid, data);
   }
-
-  console.log("STATE - FORM QUESTION: ", uuid, questionType, title, options);
 
   return (
     <FormQuestionWrapper

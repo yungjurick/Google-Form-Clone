@@ -17,7 +17,6 @@ const FormQuestionOptionItem = ({
   const { uuid, label} = option;
 
   const handleOnChangeOption = (data) => {
-    console.log(data);
     handleOnChangeQuestion(uuid, data);
   }
 

@@ -10,8 +10,6 @@ const Forms = () => {
   const { pathname } = useLocation();
   const history = useHistory();
 
-  console.log(history);
-
   useEffect(() => {
     const splitPath = pathname.split('/');
     const formStatus = splitPath[splitPath.length - 1];

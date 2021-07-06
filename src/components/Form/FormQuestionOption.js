@@ -10,7 +10,6 @@ const FormQuestionOption = ({
 }) => {
 
   const handleOnChangeOption = (uuid, data) => {
-    console.log(uuid, data);
     const cp = [...options];
     const index = cp.findIndex(o => o.uuid === uuid)
     cp[index] = { ...cp[index], ...data };
@@ -20,7 +19,10 @@ const FormQuestionOption = ({
 
   const handleAddOption = (data) => {
     const cp = [...options];
-    cp.push(data);
+    cp.push({
+      ...data,
+      label: `Option ${options.length + 1}`
+    });
 
     handleOnChangeQuestion({ 'options': cp });
   }
