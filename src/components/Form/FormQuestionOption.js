@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
+
+import FormQuestionOptionItem from './FormQuestionOptionItem'
 
 const FormQuestionOption = ({
   questionType,
   options,
   handleOnChangeQuestion
 }) => {
+
+  const handleOnChangeOption = (uuid, data) => {
+    console.log(uuid, data);
+    const cp = [...options];
+    const index = cp.findIndex(o => o.uuid === uuid)
+    cp[index] = { ...cp[index], ...data };
+
+    handleOnChangeQuestion({ 'options': cp });
+  }
+
+  const handleAddOption = (data) => {
+    const cp = [...options];
+    cp.push(data);
+
+    handleOnChangeQuestion({ 'options': cp });
+  }
+
+  const handleDeleteOption = (uuid) => {
+    const cp = [...options];
+    const filtered = cp.filter(o => o.uuid !== uuid);
+
+    handleOnChangeQuestion({ 'options': filtered });
+  }
+
+  const emptyOption = {
+    uuid: '',
+    label: ''
+  }
+
   const optionView = (questionType, options) => {
     switch(questionType) {
       case 'short-answer':
@@ -13,8 +44,53 @@ const FormQuestionOption = ({
       case 'long-answer':
         return <TextAnswerOption long>Long Answer Text</TextAnswerOption>;
       case 'checkbox':
-        return;
+        const checkboxes = options.map(option => {
+          return (
+            <FormQuestionOptionItem
+              key={option.uuid}
+              type="checkbox"
+              option={option}
+              showDelete={options.length > 1}
+              handleOnChangeQuestion={handleOnChangeOption}
+              handleDeleteOption={handleDeleteOption}
+            />
+          )
+        })
+        return (
+          <Fragment>
+            {checkboxes}
+            <FormQuestionOptionItem
+              type="checkbox"
+              isExtra
+              option={emptyOption}
+              handleAddOption={handleAddOption}
+            />
+          </Fragment>
+        );
       case 'radio':
+        const radios = options.map(option => {
+          return (
+            <FormQuestionOptionItem
+              key={option.uuid}
+              type="radio"
+              option={option}
+              showDelete={options.length > 1}
+              handleOnChangeQuestion={handleOnChangeOption}
+              handleDeleteOption={handleDeleteOption}
+            />
+          )
+        })
+        return (
+          <Fragment>
+            {radios}
+            <FormQuestionOptionItem
+              type="radio"
+              isExtra
+              option={emptyOption}
+              handleAddOption={handleAddOption}
+            />
+          </Fragment>
+        );
         return;
       default:
         return;

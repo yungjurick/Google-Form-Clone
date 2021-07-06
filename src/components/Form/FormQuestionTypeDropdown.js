@@ -8,8 +8,9 @@ import {
   MdCheckBox,
   MdArrowDropDown
 } from 'react-icons/md'
+import { uuid } from 'uuidv4';
 
-const FormQuestionTypeDropdown = ({ questionType, handleOnChangeQuestion}) => {
+const FormQuestionTypeDropdown = ({ isOptionsEmpty, questionType, handleOnChangeQuestion}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const questionTypeList = [
@@ -36,9 +37,27 @@ const FormQuestionTypeDropdown = ({ questionType, handleOnChangeQuestion}) => {
     return filtered[0].label;
   }
 
+  const createDefaultOption = () => {
+    return {
+      uuid: uuid(),
+      label: 'Option 1'
+    }
+  }
+
   const handleOnClickItem = (type, val) => {
     setIsDropdownOpen(false);
-    handleOnChangeQuestion(type, val)
+
+    const tempData = {
+      [type]: val
+    }
+
+    if ((val === 'radio' || val === 'checkbox') && isOptionsEmpty) {
+      const temp = []
+      temp.push(createDefaultOption());
+      tempData['options'] = temp;
+    }
+
+    handleOnChangeQuestion(tempData);
   }
 
   const selectedTypeIcon = (questionType) => {
@@ -47,9 +66,9 @@ const FormQuestionTypeDropdown = ({ questionType, handleOnChangeQuestion}) => {
         return <MdShortText size="1.7em"/>
       case 'long-answer':
         return <MdSubject size="1.7em"/>
-      case 'checkbox':
-        return <MdRadioButtonChecked size="1.7em"/>;
       case 'radio':
+        return <MdRadioButtonChecked size="1.7em"/>;
+      case 'checkbox':
         return <MdCheckBox size="1.7em"/>;
       default:
         return;
@@ -74,7 +93,7 @@ const FormQuestionTypeDropdown = ({ questionType, handleOnChangeQuestion}) => {
             questionTypeList.map(({ type, label }, index) => {
               if (index === 2) {
                 return (
-                  <Fragment>
+                  <Fragment key={index}>
                     <DropdownListHorizontalLine/>
                     <DropdownListItem
                       isListOpen={isDropdownOpen}
@@ -91,6 +110,7 @@ const FormQuestionTypeDropdown = ({ questionType, handleOnChangeQuestion}) => {
               } else {
                 return (
                   <DropdownListItem
+                    key={index}
                     isListOpen={isDropdownOpen}
                     isSelected={questionType === type}
                     onClick={e => handleOnClickItem('questionType', type)}

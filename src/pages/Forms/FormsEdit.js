@@ -37,18 +37,18 @@ const FormsEdit = () => {
     }
   }
 
-  const onChangeQuestion = (questionUid, key, value) => {
+  const onChangeQuestion = (questionUid, data) => {
     // On Change Form Title or Form Subtitle
     if (questionUid === formDetails.uuid) {
-      const temp = { ...formDetails, [key]: value };
+      const temp = { ...formDetails, ...data };
       setFormDetails(temp);
     
     // On Change Question Key-Val
     } else {
+      console.log("FormsEdit - On Change Question: ", questionUid, data);
       const cp = [...questions];
       const index = cp.findIndex(q => q.uuid === questionUid);
-      console.log(index);
-      cp[index] = { ...cp[index], [key]: value };
+      cp[index] = { ...cp[index], ...data };
       setQuestions(cp);
     }
   }

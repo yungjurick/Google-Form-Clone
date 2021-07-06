@@ -18,12 +18,12 @@ const FormQuestion = ({
   const subtitle = (questionData.subtitle || undefined);
   const options = (questionData.options || []);
 
-  const handleOnChangeQuestion = (key, value) => {
-    console.log(key, value);
-    onChangeQuestion(uuid, key, value);
+  const handleOnChangeQuestion = (data) => {
+    console.log("Form Questions - On Change Question", uuid, data);
+    onChangeQuestion(uuid, data);
   }
 
-  console.log(uuid, questionType, title);
+  console.log("STATE - FORM QUESTION: ", uuid, questionType, title, options);
 
   return (
     <FormQuestionWrapper
@@ -61,6 +61,7 @@ const FormQuestion = ({
               handleOnChangeQuestion={handleOnChangeQuestion}
             />
             <FormQuestionTypeDropdown
+              isOptionsEmpty={options.length === 0}
               questionType={questionType}
               handleOnChangeQuestion={handleOnChangeQuestion}
             />

@@ -30,6 +30,10 @@ const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) =>
     }
   }
 
+  const handleOnChange = (key, val) => {
+    handleOnChangeQuestion({ [key]: val });
+  }
+
   return (
     <FormInputWrapper>
       <FormTextarea
@@ -37,7 +41,7 @@ const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) =>
         size={size}
         value={value}
         placeholder={textareaPlaceholder(target)}
-        handleOnChangeQuestion={handleOnChangeQuestion}
+        handleOnChangeQuestion={handleOnChange}
         setIsFocused={setIsFocused}
       />
       <FormInputBottomDefaultShadow visible={isActive}/>

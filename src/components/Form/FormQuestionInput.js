@@ -12,19 +12,27 @@ const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
         return 'Question Title';
       case 'subtitle':
         return 'Question Subtitle';
+      case 'label':
+        return 'Option Label';
       default:
         return '';
     }
   }
 
+  const handleOnChange = (key, val) => {
+    handleOnChangeQuestion({ [key]: val })
+  }
+
   return (
-    <FormInputWrapper>
+    <FormInputWrapper
+      target={target}
+    >
       <FormTextarea
         target={target}
         size={size}
         value={value}
         placeholder={textareaPlaceholder(target)}
-        handleOnChangeQuestion={handleOnChangeQuestion}
+        handleOnChangeQuestion={handleOnChange}
         setIsFocused={setIsFocused}
       />
       <FormInputBottomDefaultShadow />
@@ -34,15 +42,16 @@ const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
 }
 
 const FormInputWrapper = styled.div`
-  flex: 1;
-  width: 100%;
   position: relative;
   & + & {
     margin-top: 8px;
   }
   border-radius: 4px 4px 0 0;
-  background-color: rgb(248,249,250);
-  padding: 16px;
+  margin-left: ${props => props.target === 'label' ? '10px' : '0'};
+  flex: ${props => props.target === 'title' ? '1' : ''};
+  width: 100%;
+  background-color: ${props => props.target === 'title' ? 'rgb(248,249,250)' : 'white'};
+  padding: ${props => props.target === 'title' ? '16px' : '0'};
 `
 
 const FormInputBottomDefaultShadow = styled.div`
