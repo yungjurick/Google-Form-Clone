@@ -96,6 +96,7 @@ const FormQuestionsLayout= styled.div`
   width: 100%;
   height: 100%;
   background-color: rgb(250,227,225);
+  padding-top: 14px;
 `
 
 const FormQuestionsContainer = styled.div`

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, Fragment } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FormInput from './FormInput';
+import FormQuestionInput from './FormQuestionInput';
 import FormQuestionTypeDropdown from './FormQuestionTypeDropdown';
 import FormQuestionOption from './FormQuestionOption';
 import FormQuestionAction from './FormQuestionAction';
@@ -33,15 +34,17 @@ const FormQuestion = ({
       { questionType === 'form-title' && (
         <FormTitle>
           <FormInput
+            isActive={isActive}
             size="large"
             value={title}
-            target="form-title"
+            target="title"
             handleOnChangeQuestion={handleOnChangeQuestion}
           />
           <FormInput
+            isActive={isActive}
             size="small"
             value={subtitle}
-            target="form-subtitle"
+            target="subtitle"
             handleOnChangeQuestion={handleOnChangeQuestion}
           />
           <FormQuestionTopShadow/>
@@ -51,10 +54,10 @@ const FormQuestion = ({
       { questionType !== 'form-title' && (
         <Fragment>
           <FormQuestionTitle>
-            <FormInput
+            <FormQuestionInput
               size="small"
               value={title}
-              target="question-title"
+              target="title"
               handleOnChangeQuestion={handleOnChangeQuestion}
             />
             <FormQuestionTypeDropdown

@@ -3,28 +3,15 @@ import styled, { keyframes } from 'styled-components';
 
 import FormTextarea from './FormTextarea';
 
-const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) => {
+const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
   const [isFocused, setIsFocused] = useState(false);
-
-  const textareaHeight = size => {
-    switch (size) {
-      case 'large':
-        return '50px';
-      case 'medium':
-        return '21px';
-      case 'small':
-        return '12px';
-      default:
-        return '12px';
-    }
-  }
 
   const textareaPlaceholder = target => {
     switch (target) {
       case 'title':
-        return 'Form Title';
+        return 'Question Title';
       case 'subtitle':
-        return 'Form Subtitle';
+        return 'Question Subtitle';
       default:
         return '';
     }
@@ -40,7 +27,7 @@ const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) =>
         handleOnChangeQuestion={handleOnChangeQuestion}
         setIsFocused={setIsFocused}
       />
-      <FormInputBottomDefaultShadow visible={isActive}/>
+      <FormInputBottomDefaultShadow />
       <FormInputBottomActiveShadow active={isFocused} />
     </FormInputWrapper>
   )
@@ -54,8 +41,8 @@ const FormInputWrapper = styled.div`
     margin-top: 8px;
   }
   border-radius: 4px 4px 0 0;
-  background-color: white;
-  padding: 0;
+  background-color: rgb(248,249,250);
+  padding: 16px;
 `
 
 const FormInputBottomDefaultShadow = styled.div`
@@ -90,4 +77,4 @@ const underline = keyframes`
   100% {width:100%}
 `
 
-export default FormInput;
+export default FormQuestionInput;
