@@ -5,6 +5,7 @@ import FormTextarea from './FormTextarea';
 
 const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const textareaPlaceholder = target => {
     switch (target) {
@@ -26,6 +27,8 @@ const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
   return (
     <FormInputWrapper
       target={target}
+      onMouseEnter={e => setIsHovered(true)}
+      onMouseLeave={e => setIsHovered(false)}
     >
       <FormTextarea
         target={target}
@@ -35,7 +38,7 @@ const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
         handleOnChangeQuestion={handleOnChange}
         setIsFocused={setIsFocused}
       />
-      <FormInputBottomDefaultShadow />
+      <FormInputBottomDefaultShadow target={target} isHovered={isHovered} />
       <FormInputBottomActiveShadow active={isFocused} />
     </FormInputWrapper>
   )
@@ -56,9 +59,20 @@ const FormInputWrapper = styled.div`
 
 const FormInputBottomDefaultShadow = styled.div`
   position: absolute;
+  display: ${props => {
+    if (props.target === 'label') {
+      if (props.isHovered) {
+        return 'block';
+      } else {
+        return 'none';
+      }
+    } else {
+      return 'block';
+    }
+  }};
   left: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.12);
+  background-color: ${props => props.target === 'title' ? '#80868b' : 'rgba(0,0,0,0.12)'};
   height: 1px;
   width: 100%;
   margin: 0;
@@ -67,7 +81,6 @@ const FormInputBottomDefaultShadow = styled.div`
 
 const FormInputBottomActiveShadow = styled.div`
   position:absolute;
-  z-index: 10;
   bottom:0px;
   left:0px;
   height:2px;
@@ -82,8 +95,12 @@ const FormInputBottomActiveShadow = styled.div`
 `
 
 const underline = keyframes`
-  0% {width:0}
-  100% {width:100%}
+  0% {
+    width:0;
+  }
+  100% {
+    width:100%
+  }
 `
 
 export default FormQuestionInput;

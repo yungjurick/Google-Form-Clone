@@ -118,7 +118,7 @@ const TextAnswerOption = styled.div`
   border-bottom: 1px dotted rgba(0,0,0,0.38);
   padding: 1.75px 0;
   margin-top: 8px;
-  width: ${props => props.long ? '70%' : '40%'};
+  width: ${props => props.long ? '85%' : '40%'};
 `
 
 export default FormQuestionOption;

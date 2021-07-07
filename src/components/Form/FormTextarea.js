@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const FormTextarea = ({
   target,
   size,
-  value,
+  value = '',
   placeholder,
   handleOnChangeQuestion,
   setIsFocused
@@ -19,6 +19,8 @@ const FormTextarea = ({
         return '21px';
       case 'small':
         return '12px';
+      case 'extrasmall':
+        return '10px';
       default:
         return '12px';
     }

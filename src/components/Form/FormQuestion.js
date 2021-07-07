@@ -1,25 +1,45 @@
 import React, { useState, useRef, useEffect, Fragment } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import FormInput from './FormInput';
-import FormQuestionInput from './FormQuestionInput';
-import FormQuestionTypeDropdown from './FormQuestionTypeDropdown';
-import FormQuestionOption from './FormQuestionOption';
-import FormQuestionAction from './FormQuestionAction';
+import FormQuestionActive from './FormQuestionActive';
+import FormQuestionStatic from './FormQuestionStatic';
 
 const FormQuestion = ({
   questionData,
   onClickQuestion,
   onChangeQuestion,
+  onCopyQuestion,
+  onDeleteQuestion,
+  onDeleteQuestionKey,
   isActive,
 }) => {
 
-  const { uuid, questionType, title } = questionData;
-  const subtitle = (questionData.subtitle || undefined);
+  const { uuid, questionType, title, isRequired } = questionData;
+  const subtitle = questionData.subtitle;
   const options = (questionData.options || []);
+
+  console.log(questionData);
 
   const handleOnChangeQuestion = (data) => {
     onChangeQuestion(uuid, data);
+  }
+
+  const handleOnCopyQuestion = () => {
+    onCopyQuestion(uuid);
+  }
+
+  const handleOnDeleteQuestion = () => {
+    onDeleteQuestion(uuid)
+  }
+
+  const handleOnChangeSubtitle = () => {
+    if (subtitle === undefined) {
+      onChangeQuestion(uuid, {
+        'subtitle': ''
+      })
+    } else {
+      onDeleteQuestionKey(uuid, 'subtitle')
+    }
   }
 
   return (
@@ -27,54 +47,33 @@ const FormQuestion = ({
       isActive={isActive}
       onClick={e => onClickQuestion(e, uuid)}
     >
-      {/* For Form Title And Description */}
-      { questionType === 'form-title' && (
-        <FormTitle>
-          <FormInput
-            isActive={isActive}
-            size="large"
-            value={title}
-            target="title"
-            handleOnChangeQuestion={handleOnChangeQuestion}
-          />
-          <FormInput
-            isActive={isActive}
-            size="small"
-            value={subtitle}
-            target="subtitle"
-            handleOnChangeQuestion={handleOnChangeQuestion}
-          />
-          <FormQuestionTopShadow/>
-        </FormTitle>
-      )}
+      {
+        isActive
+        ?
+        <FormQuestionActive
+          questionType={questionType}
+          title={title}
+          subtitle={subtitle}
+          isRequired={isRequired}
+          handleOnChangeQuestion={handleOnChangeQuestion}
+          handleOnCopyQuestion={handleOnCopyQuestion}
+          handleOnDeleteQuestion={handleOnDeleteQuestion}
+          handleOnChangeSubtitle={handleOnChangeSubtitle}
+          options={options}
+        />
+        :
+        <FormQuestionStatic
+          questionType={questionType}
+          isRequired={isRequired}
+          title={title}
+          subtitle={subtitle}
+          options={options}
+        />
+      }
 
-      { questionType !== 'form-title' && (
-        <Fragment>
-          <FormQuestionTitle>
-            <FormQuestionInput
-              size="small"
-              value={title}
-              target="title"
-              handleOnChangeQuestion={handleOnChangeQuestion}
-            />
-            <FormQuestionTypeDropdown
-              isOptionsEmpty={options.length === 0}
-              questionType={questionType}
-              handleOnChangeQuestion={handleOnChangeQuestion}
-            />
-          </FormQuestionTitle>
-          <FormQuestionOption
-            questionType={questionType}
-            options={options}
-            handleOnChangeQuestion={handleOnChangeQuestion}
-          />
-          <FormQuestionAction />
-        </Fragment>
-      )}
-
-      { isActive && <FormQuestionLeftShadow
-        isTitleAndDescription={questionType === 'form-title'}
-      />}
+      {/* Border Line */}
+      { questionType === 'form-title' && <FormQuestionTopBorder/> }
+      { isActive && <FormQuestionLeftBorder isTitleAndDescription={questionType === 'form-title'}/>}
     </FormQuestionWrapper>
   )
 }
@@ -94,19 +93,7 @@ const FormQuestionWrapper = styled.div`
   }
 `
 
-const FormTitle = styled.div`
-  padding: 0 24px 24px 24px;
-`
-
-const FormQuestionTitle = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  padding: 0 24px;
-  margin-bottom: 16px;
-`
-
-const FormQuestionLeftShadow = styled.div`
+const FormQuestionLeftBorder = styled.div`
   height: ${props => props.isTitleAndDescription ? 'calc(100% + -8px)' : '100%'};
   left: -1px;
   padding-right: 5px;
@@ -118,7 +105,7 @@ const FormQuestionLeftShadow = styled.div`
   border-top-left-radius: ${props => props.isTitleAndDescription ? '0' : '8px'};
 `
 
-const FormQuestionTopShadow = styled.div`
+const FormQuestionTopBorder = styled.div`
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   height: 10px;

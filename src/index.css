@@ -3,6 +3,7 @@ body {
   font-family: 'Google Sans', Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #202124;
 }
 
 code {
@@ -10,6 +11,6 @@ code {
     monospace;
 }
 
-div {
+div, p {
   box-sizing: border-box;
 }

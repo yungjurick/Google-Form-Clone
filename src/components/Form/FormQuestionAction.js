@@ -1,15 +1,43 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+  MdContentCopy,
+  MdDelete,
+  MdAssignment
+} from 'react-icons/md';
+import Button from '../Common/Button';
 
-const FormQuestionAction = ({}) => {
+const FormQuestionAction = ({
+  handleOnCopyQuestion,
+  handleOnDeleteQuestion,
+  handleOnChangeSubtitle
+}) => {
   return (
     <FormQuestionActionContainer>
       <FormQuestionActionItemList>
-        <FormQuestionActionButton></FormQuestionActionButton>
-        <FormQuestionActionButton></FormQuestionActionButton>
+        <Button
+          size="medium"
+          label="Copy"
+          tooltipLocation="bottom"
+          imgComponent={<MdContentCopy size="1.35em" color="rgb(0, 0, 0, 0.55)" />}
+          onClickHandler={handleOnCopyQuestion}
+        />
+        <Button
+          size="medium"
+          label="Delete"
+          tooltipLocation="bottom"
+          imgComponent={<MdDelete size="1.35em" color="rgb(0, 0, 0, 0.55)" />}
+          onClickHandler={handleOnDeleteQuestion}
+        />
+        <Button
+          size="medium"
+          label="Subtitle"
+          tooltipLocation="bottom"
+          imgComponent={<MdAssignment size="1.35em" color="rgb(0, 0, 0, 0.55)" />}
+          onClickHandler={handleOnChangeSubtitle}
+        />
         <FormQuestionHorizontalLine/>
         <FormQuestionActionToggle></FormQuestionActionToggle>
-        <FormQuestionActionButton></FormQuestionActionButton>
       </FormQuestionActionItemList>
     </FormQuestionActionContainer>
   )
@@ -31,7 +59,12 @@ const FormQuestionActionItemList = styled.div`
 `
 
 const FormQuestionActionButton = styled.div``
-const FormQuestionHorizontalLine = styled.div``
+const FormQuestionHorizontalLine = styled.div`
+  border-left: 1px solid #dadce0;
+  height: 32px;
+  margin: 0 16px;
+  width: 0;
+`
 const FormQuestionActionToggle = styled.div``
 
 export default FormQuestionAction;

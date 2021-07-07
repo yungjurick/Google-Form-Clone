@@ -1,13 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
 import { MdAddCircleOutline } from 'react-icons/md';
+import Button from '../Common/Button';
 
 const FormSidePanel = ({ onClickPanelButton }) => {
+  const handleAddQuestion = () => {
+    onClickPanelButton('add')
+  }
+
   return (
     <SidePanelWrapper>
-      <SidePanelButton onClick={e => onClickPanelButton('add')}>
-        <MdAddCircleOutline size="1.4em" color="gray" />
-      </SidePanelButton>
+      <Button
+        size="small"
+        label="Add Question"
+        tooltipLocation="right"
+        imgComponent={<MdAddCircleOutline size="24px" color="rgb(0, 0, 0, 0.65)" />}
+        onClickHandler={handleAddQuestion}
+      />
     </SidePanelWrapper>
   )
 }
@@ -25,6 +34,7 @@ const SidePanelWrapper = styled.div`
   border-radius: 8px;
   top: 0;
   right: -62px;
+  padding: 6px 0;
 `
 
 const SidePanelButton = styled.div`

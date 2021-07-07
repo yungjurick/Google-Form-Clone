@@ -1,23 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FormTextarea from './FormTextarea';
 
-const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) => {
+const FormInput = ({
+  size, 
+  target,
+  value = '',
+  handleOnChangeQuestion
+}) => {
   const [isFocused, setIsFocused] = useState(false);
-
-  const textareaHeight = size => {
-    switch (size) {
-      case 'large':
-        return '50px';
-      case 'medium':
-        return '21px';
-      case 'small':
-        return '12px';
-      default:
-        return '12px';
-    }
-  }
 
   const textareaPlaceholder = target => {
     switch (target) {
@@ -44,7 +36,7 @@ const FormInput = ({ isActive, size, target, value, handleOnChangeQuestion }) =>
         handleOnChangeQuestion={handleOnChange}
         setIsFocused={setIsFocused}
       />
-      <FormInputBottomDefaultShadow visible={isActive}/>
+      <FormInputBottomDefaultShadow />
       <FormInputBottomActiveShadow active={isFocused} />
     </FormInputWrapper>
   )

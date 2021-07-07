@@ -10,7 +10,8 @@ const FormsEdit = () => {
     return {
       uuid: uuid(),
       questionType: 'short-answer',
-      title: ''
+      title: '',
+      isRequired: false
     }
   }
 
@@ -31,17 +32,38 @@ const FormsEdit = () => {
     switch(buttonType) {
       case 'add':
         const newQuestion = createDefaultQuestion();
-        onAddQuestion(newQuestion);
+        onAddQuestion(activeQuestionUid, newQuestion);
         return;
       default:
         return;
     }
   }
 
-  const onAddQuestion = (data) => {
+  const onAddQuestion = (baseQuestionUid, data) => {
     const cp = [...questions];
-    cp.push(data);
-    setQuestions(cp);
+
+    console.log(data);
+
+    // If Base Question Uid is given
+    if (baseQuestionUid) {
+      const index = cp.findIndex(q => q.uuid === baseQuestionUid);
+      setQuestions([
+        ...cp.slice(0, index),
+        data,
+        ...cp.slice(index)
+      ]);
+
+    // If Base Question Uid is not given - add at the last index
+    } else {
+      cp.push(data);
+      setQuestions(cp);
+    }
+  }
+
+  const onCopyQuestion = (questionUid) => {
+    const index = questions.findIndex(q => q.uuid === questionUid);
+    console.log(questionUid, questions, questions[index]);
+    onAddQuestion(questionUid, { ...questions[index], uuid: uuid() });
   }
 
   const onChangeQuestion = (questionUid, data) => {
@@ -56,8 +78,21 @@ const FormsEdit = () => {
       const cp = [...questions];
       const index = cp.findIndex(q => q.uuid === questionUid);
       cp[index] = { ...cp[index], ...data };
+      console.log(cp);
       setQuestions(cp);
     }
+  }
+
+  const onDeleteQuestion = (questionUid) => {
+    const cp = [...questions];
+    const filtered = cp.filter(q => q.uuid !== questionUid);
+    setQuestions(filtered);
+  }
+  const onDeleteQuestionKey = (questionUid, key) => {
+    const cp = [...questions];
+    const index = cp.findIndex(q => q.uuid === questionUid);
+    delete cp[index][key]
+    setQuestions(cp);
   }
 
   useEffect(() => {
@@ -89,6 +124,9 @@ const FormsEdit = () => {
                 questionData={q}
                 onClickQuestion={onClickQuestion}
                 onChangeQuestion={onChangeQuestion}
+                onCopyQuestion={onCopyQuestion}
+                onDeleteQuestion={onDeleteQuestion}
+                onDeleteQuestionKey={onDeleteQuestionKey}
                 isActive={activeQuestionUid === q.uuid}
               />
             )
