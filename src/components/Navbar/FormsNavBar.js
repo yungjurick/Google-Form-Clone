@@ -24,6 +24,7 @@ const FormsNavBar = () => {
           <NavBarTitle>
             G-ooo-gle Form
           </NavBarTitle>
+          <span>-</span>
         </NavBarTitleContainer>
         <NavBarUserContainer>
           <ProfileContainer>
@@ -87,6 +88,12 @@ const NavBarTitleContainer = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  & > span {
+    padding-top: 6px;
+    padding-left: 15px;
+    font-size: 14px;
+    color: gray;
+  }
 `
 
 const NavBarUserContainer = styled.div`

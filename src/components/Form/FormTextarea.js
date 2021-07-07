@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const FormTextarea = ({
@@ -10,6 +10,11 @@ const FormTextarea = ({
   setIsFocused
 }) => {
   const textareaRef = useRef(null);
+  const [textValue, setTextValue] = useState('');
+
+  useEffect(() => {
+    setTextValue(value);
+  }, [value])
 
   const textareaHeight = size => {
     switch (size) {
@@ -31,17 +36,27 @@ const FormTextarea = ({
       textareaRef.current.style.height = textareaHeight(size);
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [value, size])
+  }, [textValue, size])
+
+  const handleOnBlur = () => {
+    setIsFocused(false);
+
+    // Check if text-value has changed
+    // If changed -> fire handleOnChangeQuestion
+    if (value !== textValue) {
+      handleOnChangeQuestion(target, textValue)
+    }
+  }
 
   return (
     <FormInputTextarea
       ref={textareaRef}
       size={size}
-      value={value}
+      value={textValue}
       placeholder={placeholder}
-      onChange={e => handleOnChangeQuestion(target, e.target.value)}
+      onChange={e => setTextValue(e.target.value)}
       onFocus={e => setIsFocused(true)}
-      onBlur={e => setIsFocused(false)}
+      onBlur={e => handleOnBlur()}
     />
   )
 }

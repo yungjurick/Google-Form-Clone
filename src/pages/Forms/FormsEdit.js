@@ -1,11 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { uuid } from 'uuidv4';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setFormQuestions,
+  setFormTitle,
+  setFormSubtitle
+} from '../../reducers/form';
 
 import FormQuestion from '../../components/Form/FormQuestion';
 import FormSidePanel from '../../components/Form/FormSidePanel';
 
 const FormsEdit = () => {
+  const dispatch = useDispatch();
+  const {
+    uuid: formUid,
+    title,
+    subtitle,
+    questions
+  } = useSelector(state => state.form.form);
+
   const createDefaultQuestion = () => {
     return {
       uuid: uuid(),
@@ -15,15 +29,16 @@ const FormsEdit = () => {
     }
   }
 
+  const formDetails = () => {
+    return {
+      uuid: formUid,
+      questionType: 'form-title',
+      title,
+      subtitle
+    }
+  }
+
   const [activeQuestionUid, setActiveQuestionUid] = useState(null);
-  const [formDetails, setFormDetails] = useState({
-    uuid: uuid(),
-    questionType: 'form-title',
-    title: '',
-    subtitle: '',
-    lastUpdated: ''
-  })
-  const [questions, setQuestions] = useState([]);
 
   const onClickQuestion = (e, uuid) => {
     setActiveQuestionUid(uuid)
@@ -48,16 +63,16 @@ const FormsEdit = () => {
     // If Base Question Uid is given
     if (baseQuestionUid) {
       const index = cp.findIndex(q => q.uuid === baseQuestionUid);
-      setQuestions([
+      dispatch(setFormQuestions([
         ...cp.slice(0, index),
         data,
         ...cp.slice(index)
-      ]);
+      ]));
 
     // If Base Question Uid is not given - add at the last index
     } else {
       cp.push(data);
-      setQuestions(cp);
+      dispatch(setFormQuestions(cp));
     }
   }
 
@@ -69,9 +84,15 @@ const FormsEdit = () => {
 
   const onChangeQuestion = (questionUid, data) => {
     // On Change Form Title or Form Subtitle
-    if (questionUid === formDetails.uuid) {
-      const temp = { ...formDetails, ...data };
-      setFormDetails(temp);
+    if (questionUid === formUid) {
+      const keys = Object.keys(data);
+      keys.forEach(key => {
+        if (key === 'title') {
+          dispatch(setFormTitle(data[key]))
+        } else if (key === 'subtitle') {
+          dispatch(setFormSubtitle(data[key]))
+        }
+      })
     
     // On Change Question Key-Val
     } else {
@@ -80,20 +101,20 @@ const FormsEdit = () => {
       const index = cp.findIndex(q => q.uuid === questionUid);
       cp[index] = { ...cp[index], ...data };
       console.log(cp);
-      setQuestions(cp);
+      dispatch(setFormQuestions(cp));
     }
   }
 
   const onDeleteQuestion = (questionUid) => {
     const cp = [...questions];
     const filtered = cp.filter(q => q.uuid !== questionUid);
-    setQuestions(filtered);
+    dispatch(setFormQuestions(filtered));
   }
   const onDeleteQuestionKey = (questionUid, key) => {
     const cp = [...questions];
     const index = cp.findIndex(q => q.uuid === questionUid);
     delete cp[index][key]
-    setQuestions(cp);
+    dispatch(setFormQuestions(cp));
   }
 
   useEffect(() => {
@@ -101,7 +122,7 @@ const FormsEdit = () => {
       console.log("Fill in Empty Questions")
       const cp = [];
       cp.push(createDefaultQuestion());
-      setQuestions(cp);
+      dispatch(setFormQuestions(cp));
     }
   }, [])
 
@@ -112,10 +133,10 @@ const FormsEdit = () => {
         {/* Form Title And Description */}
         <FormQuestion
           isTitleAndDescription
-          questionData={formDetails}
+          questionData={formDetails()}
           onClickQuestion={onClickQuestion}
           onChangeQuestion={onChangeQuestion}
-          isActive={activeQuestionUid === formDetails.uuid}
+          isActive={activeQuestionUid === formUid}
         />
         {
           questions.map(q => {

@@ -36,13 +36,14 @@ const FormsList = () => {
 
   const addNewForm = async (creatorUid) => {
     dispatch(setLoading(true));
-    // Update Redux
+    // Update State
     const tempForms = [...forms];
     const defaultForm = createDefaultForm(creatorUid);
     tempForms.push(defaultForm);
     setForms(tempForms);
 
     // Update Firestore
+    // - Add New Form Doc
     await db
       .collection('forms')
       .doc(defaultForm.uuid)

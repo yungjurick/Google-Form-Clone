@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory, useParams, useLocation, Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setForm } from '../../reducers/form';
+import { setLoading } from '../../reducers/loading';
+import { db } from '../../firebase';
 import styled from 'styled-components';
 
 import FormsNavBar from '../../components/Navbar/FormsNavBar';
@@ -10,15 +13,42 @@ const Forms = () => {
   const { formUid } = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { uid: userUid } = useSelector(state => state.user.userProfile);
 
   useEffect(() => {
     const splitPath = pathname.split('/');
     const formStatus = splitPath[splitPath.length - 1];
+    const fetchFormData = async () => {
+      dispatch(setLoading(true));
+
+      const formRef = db
+        .collection('forms')
+        .doc(formUid)
+      const result = await formRef.get();
+      const formData = result.data();
+
+      console.log("Form Data: ", formData)
+
+      if (formData === undefined) {
+        alert('The form does not exist.');
+        history.push('/forms/');
+      } else if (formData.creatorUid !== userUid) {
+        alert('Unauthorized Access: You are not the creator of the form');
+        history.push('/forms/');
+      } else {
+        dispatch(setForm(formData));
+      }
+
+      dispatch(setLoading(false));
+    }
 
     if (formUid === '') {
       history.push('/forms');
     } else if (formStatus !== 'edit' && formStatus !== 'response') {
       history.push(`/forms/${formUid}/edit`);
+    } else {
+      fetchFormData();
     }
   }, [pathname, formUid])
 
