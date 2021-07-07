@@ -5,12 +5,16 @@ import {
   MdDelete,
   MdAssignment
 } from 'react-icons/md';
+
+import FormToggle from './FormToggle';
 import Button from '../Common/Button';
 
 const FormQuestionAction = ({
+  isRequired,
   handleOnCopyQuestion,
   handleOnDeleteQuestion,
-  handleOnChangeSubtitle
+  handleOnChangeSubtitle,
+  handleOnChangeIsRequired
 }) => {
   return (
     <FormQuestionActionContainer>
@@ -37,7 +41,10 @@ const FormQuestionAction = ({
           onClickHandler={handleOnChangeSubtitle}
         />
         <FormQuestionHorizontalLine/>
-        <FormQuestionActionToggle></FormQuestionActionToggle>
+        <FormToggle
+          isRequired={isRequired}
+          handleOnChangeIsRequired={handleOnChangeIsRequired}
+        />
       </FormQuestionActionItemList>
     </FormQuestionActionContainer>
   )
@@ -58,13 +65,11 @@ const FormQuestionActionItemList = styled.div`
   align-items: center;
 `
 
-const FormQuestionActionButton = styled.div``
 const FormQuestionHorizontalLine = styled.div`
   border-left: 1px solid #dadce0;
   height: 32px;
   margin: 0 16px;
   width: 0;
 `
-const FormQuestionActionToggle = styled.div``
 
 export default FormQuestionAction;

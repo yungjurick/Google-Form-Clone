@@ -24,6 +24,12 @@ const FormQuestion = ({
     onChangeQuestion(uuid, data);
   }
 
+  const handleOnChangeIsRequired = () => {
+    onChangeQuestion(uuid, {
+      'isRequired': !isRequired
+    });
+  }
+
   const handleOnCopyQuestion = () => {
     onCopyQuestion(uuid);
   }
@@ -59,6 +65,7 @@ const FormQuestion = ({
           handleOnCopyQuestion={handleOnCopyQuestion}
           handleOnDeleteQuestion={handleOnDeleteQuestion}
           handleOnChangeSubtitle={handleOnChangeSubtitle}
+          handleOnChangeIsRequired={handleOnChangeIsRequired}
           options={options}
         />
         :

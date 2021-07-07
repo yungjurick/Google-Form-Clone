@@ -9,12 +9,14 @@ import FormQuestionAction from './FormQuestionAction';
 
 const FormQuestionActive = ({
   questionType,
+  isRequired,
   title,
   subtitle,
   handleOnChangeQuestion,
   handleOnCopyQuestion,
   handleOnDeleteQuestion,
   handleOnChangeSubtitle,
+  handleOnChangeIsRequired,
   options,
 }) => {
   return (
@@ -69,9 +71,12 @@ const FormQuestionActive = ({
             handleOnChangeQuestion={handleOnChangeQuestion}
           />
           <FormQuestionAction
+            isRequired={isRequired}
+            handleOnChangeQuestion={handleOnChangeQuestion}
             handleOnDeleteQuestion={handleOnDeleteQuestion}
             handleOnCopyQuestion={handleOnCopyQuestion}
             handleOnChangeSubtitle={handleOnChangeSubtitle}
+            handleOnChangeIsRequired={handleOnChangeIsRequired}
           />
         </Fragment>
       )}
