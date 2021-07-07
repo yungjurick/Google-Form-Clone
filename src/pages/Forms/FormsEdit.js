@@ -20,7 +20,8 @@ const FormsEdit = () => {
     uuid: uuid(),
     questionType: 'form-title',
     title: '',
-    subtitle: ''
+    subtitle: '',
+    lastUpdated: ''
   })
   const [questions, setQuestions] = useState([]);
 

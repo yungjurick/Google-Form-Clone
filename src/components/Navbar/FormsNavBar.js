@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
+import { MdInsertDriveFile, MdAccountCircle } from 'react-icons/md';
 
 const FormsNavBar = () => {
   const { push } = useHistory();
@@ -9,32 +10,50 @@ const FormsNavBar = () => {
   const splitPath = location.pathname.split('/');
   const formStatus = splitPath[splitPath.length - 1];
 
+  console.log(formUid);
+
   const onClickTab = (status, formUid) => {
     push(`/forms/${formUid}/${status}`)
   }
 
   return (
     <NavBarContainer>
-      <NavBarRow></NavBarRow>
-      <NavBarRow center>
-        <NavBarTabContainer>
-          <NavBarTabList>
-            <NavBarTab
-              selected={formStatus === 'edit'}
-              onClick={() => onClickTab('edit', formUid)}
-            >
-              Question
-            </NavBarTab>
-            <NavBarTab
-              selected={formStatus === 'response'}
-              onClick={() => onClickTab('response', formUid)}
-            >
-              Response
-            </NavBarTab>
-            <NavBarTabShadow activeStatus={formStatus}/>
-          </NavBarTabList>
-        </NavBarTabContainer>
+      <NavBarRow>
+        <NavBarTitleContainer>
+          <MdInsertDriveFile size="2.8em" color="rgb(217, 61, 46)"/>
+          <NavBarTitle>
+            G-ooo-gle Form
+          </NavBarTitle>
+        </NavBarTitleContainer>
+        <NavBarUserContainer>
+          <ProfileContainer>
+            <MdAccountCircle size="2.5em" color="rgb(217, 61, 46)"/>
+          </ProfileContainer>
+          <div></div>
+        </NavBarUserContainer>
       </NavBarRow>
+      {
+        formUid &&
+        <NavBarRow center>
+          <NavBarTabContainer>
+            <NavBarTabList>
+              <NavBarTab
+                selected={formStatus === 'edit'}
+                onClick={() => onClickTab('edit', formUid)}
+              >
+                Question
+              </NavBarTab>
+              <NavBarTab
+                selected={formStatus === 'response'}
+                onClick={() => onClickTab('response', formUid)}
+              >
+                Response
+              </NavBarTab>
+              <NavBarTabShadow activeStatus={formStatus}/>
+            </NavBarTabList>
+          </NavBarTabContainer>
+        </NavBarRow>
+      }
       <NavBarContainerShadow />
     </NavBarContainer>
   )
@@ -59,8 +78,51 @@ const NavBarContainerShadow = styled.div`
 const NavBarRow = styled.div`
   width: 100%;
   display: flex;
-  align-items:c enter;
+  align-items: center;
   justify-content: ${props => props.center ? 'center' : 'space-between'};
+  padding: 0 26px;
+`
+
+const NavBarTitleContainer = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const NavBarUserContainer = styled.div`
+  position: relative;
+  cursor: pointer;
+  & > div:last-child {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    transition: 0.3s all;
+  }
+  &:hover {
+    & > div:last-child {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+`
+
+const ProfileContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const NavBarTitle = styled.p`
+  font-size: 18px;
+  padding-top: 2px;
+  padding-left: 4px;
+  color: #5f6368;
+  font-family: 'Product Sans',Arial,sans-serif;
+  font-size: 22px;
+  line-height: 24px;
 `
 
 const NavBarTabContainer = styled.div`
