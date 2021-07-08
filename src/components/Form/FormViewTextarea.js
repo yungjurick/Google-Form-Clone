@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const FormEditTextarea = ({
+const FormViewTextarea = ({
   type,
   value = '',
   handleOnChangeText,
@@ -27,12 +27,20 @@ const FormEditTextarea = ({
     }
   }
 
+  // Clear entry with Escape Key
+  const handleKeyDown = (key) => {
+    if (key === 'Escape') {
+      setTextValue('');
+    }
+  }
+
   return (
     <FormInputTextarea
       type={type}
       ref={textareaRef}
       value={textValue}
       placeholder="My response"
+      onKeyDown={e => handleKeyDown(e.key)}
       onChange={e => setTextValue(e.target.value)}
       onFocus={e => setIsFocused(true)}
       onBlur={e => handleOnBlur()}
@@ -63,4 +71,4 @@ const FormInputTextarea = styled.textarea`
   }
 `
 
-export default FormEditTextarea
+export default FormViewTextarea

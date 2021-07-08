@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import FormTextarea from './FormEditTextarea';
+import FormEditTextarea from './FormEditTextarea';
 
 const FormEditQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -30,7 +30,7 @@ const FormEditQuestionInput = ({ size, target, value, handleOnChangeQuestion }) 
       onMouseEnter={e => setIsHovered(true)}
       onMouseLeave={e => setIsHovered(false)}
     >
-      <FormTextarea
+      <FormEditTextarea
         target={target}
         size={size}
         value={value}

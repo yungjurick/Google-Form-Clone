@@ -20,6 +20,7 @@ const FormViewTextResponse = ({
         type={questionType}
         value={response}
         handleOnChangeText={handleOnChangeText}
+        isErrorActive={isErrorActive}
       />
     </TextResponse>
   )

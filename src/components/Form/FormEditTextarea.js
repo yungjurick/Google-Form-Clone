@@ -7,8 +7,7 @@ const FormEditTextarea = ({
   value = '',
   placeholder,
   handleOnChangeQuestion,
-  setIsFocused,
-  formType = 'edit'
+  setIsFocused
 }) => {
   const textareaRef = useRef(null);
   const [textValue, setTextValue] = useState('');
@@ -62,12 +61,22 @@ const FormEditTextarea = ({
     }
   }
 
+
+  // Clear entry with Escape Key
+  const handleKeyDown = (key) => {
+    if (key === 'Escape') {
+      setTextValue('');
+    }
+  }
+
+
   return (
     <FormInputTextarea
       ref={textareaRef}
       size={size}
       value={textValue}
       placeholder={placeholder}
+      onKeyDown={e => handleKeyDown(e.key)}
       onChange={e => setTextValue(e.target.value)}
       onFocus={e => setIsFocused(true)}
       onBlur={e => handleOnBlur(e)}

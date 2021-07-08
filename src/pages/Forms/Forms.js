@@ -8,13 +8,18 @@ import styled from 'styled-components';
 
 import FormsNavBar from '../../components/Navbar/FormsNavBar';
 import FormsEdit from './FormsEdit';
+import { setProfileDropdownStatus } from '../../reducers/modal';
+import SendFormModal from '../../components/Modal/SendFormModal';
 
 const Forms = () => {
   const { formUid } = useParams();
   const { pathname } = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
+
   const { uid: userUid } = useSelector(state => state.user.userProfile);
+  const isProfileDropdownOpen = useSelector(state => state.modal.isProfileDropdownOpen);
+  const isSendFormModalOpen = useSelector(state => state.modal.isSendFormModalOpen);
 
   useEffect(() => {
     const splitPath = pathname.split('/');
@@ -52,19 +57,33 @@ const Forms = () => {
     }
   }, [pathname, formUid])
 
+  const handleClickContainer = () => {
+    if (isProfileDropdownOpen) {
+      dispatch(setProfileDropdownStatus(false));
+    }
+  }
+
   return (
     <FormsLayout>
       <FormsNavBar/>
-      <FormsContainer>
+      <FormsContainer onClick={e => handleClickContainer()}>
         <Switch>
           <Route exact path="/forms/:formsUid/edit">
             <FormsEdit />
           </Route>
           <Route exact path="/forms/:formsUid/response">
-            YOLO
+            WIP
           </Route>
         </Switch>
       </FormsContainer>
+
+      {/* Modal */}
+      {
+        isSendFormModalOpen &&
+        <SendFormModal
+          formUid={formUid}
+        />
+      }
     </FormsLayout>
   )
 }
@@ -74,6 +93,8 @@ const FormsLayout = styled.div`
   min-height: 100vh;
   background-color: rgb(250,227,225);
 `
-const FormsContainer = styled.div``
+const FormsContainer = styled.div`
+  padding-top: 107px;
+`
 
 export default Forms

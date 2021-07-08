@@ -148,6 +148,7 @@ const Container = styled.div`
   min-width: 700px;
   width: 80%;
   margin: 0 auto;
+  padding-top: 70px;
 `
 const ContainerTitle = styled.div`
   margin: 0;

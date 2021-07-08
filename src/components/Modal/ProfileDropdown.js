@@ -7,9 +7,14 @@ const ProfileDropdown = ({
 }) => {
   const onImageError = img => {
     img.onerror = '';
-    img.src = '';
+    img.src = 'https://gravatar.com/avatar/f414c13ace4f77f9dbc7c609c78dafc3?s=400&d=identicon&r=x';
     return true;
   }
+
+  const handleLogout = () => {
+
+  }
+
   return (
     <ProfileCard>
       <Profile>
@@ -23,7 +28,7 @@ const ProfileDropdown = ({
         </ProfileName>
       </Profile>
       <ProfileCardRow>
-        <ProfileCardButton>
+        <ProfileCardButton onClick={e => handleLogout()}>
           Logout
         </ProfileCardButton>
       </ProfileCardRow>

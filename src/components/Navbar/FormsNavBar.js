@@ -3,8 +3,11 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import { useDispatch, useSelector } from 'react-redux';
 import { MdInsertDriveFile } from 'react-icons/md';
-import ProfileDropdown from '../Auth/ProfileDropdown';
-import { setProfileDropdownStatus } from '../../reducers/modal';
+import ProfileDropdown from '../Modal/ProfileDropdown';
+import {
+  setProfileDropdownStatus,
+  setSendModalFormStatus
+} from '../../reducers/modal';
 
 const FormsNavBar = () => {
   const dispatch = useDispatch();
@@ -34,6 +37,12 @@ const FormsNavBar = () => {
     push(`/forms/${formUid}/${status}`)
   }
 
+  const onImageError = img => {
+    img.onerror = '';
+    img.src = 'https://gravatar.com/avatar/f414c13ace4f77f9dbc7c609c78dafc3?s=400&d=identicon&r=x';
+    return true;
+  }
+
   return (
     <NavBarContainer>
       <NavBarRow>
@@ -46,12 +55,20 @@ const FormsNavBar = () => {
           </NavBarTitle>
           <span>{saveStatus}</span>
         </NavBarTitleContainer>
-        <NavBarUserContainer onClick={e => dispatch(setProfileDropdownStatus(!isProfileDropdownOpen))}>
-          <ProfileContainer>
-            <img src={photoUrl} alt="profile"/>
-          </ProfileContainer>
-          <div></div>
-        </NavBarUserContainer>
+        <NavBarActionContainer>
+          {
+            formUid &&
+            <NavBarActionButton onClick={e => dispatch(setSendModalFormStatus(true))}>
+              SEND
+            </NavBarActionButton>
+          }
+          <NavBarUserContainer onClick={e => dispatch(setProfileDropdownStatus(!isProfileDropdownOpen))}>
+            <ProfileContainer>
+              <img src={photoUrl} alt="profile" onError={e => onImageError(this)}/>
+            </ProfileContainer>
+            <div></div>
+          </NavBarUserContainer>
+        </NavBarActionContainer>
       </NavBarRow>
       {
         formUid &&
@@ -89,9 +106,10 @@ const FormsNavBar = () => {
 
 const NavBarContainer = styled.div`
   width: 100%;
-  position: relative;
+  position: fixed;
   background-color: #fff;
   border-bottom: 1px solid #dadce0;
+  z-index: 2;
 `
 
 const NavBarContainerShadow = styled.div`
@@ -137,6 +155,30 @@ const NavBarTitle = styled.div`
   cursor: pointer;
 `
 
+const NavBarActionContainer = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`
+
+const NavBarActionButton = styled.button`
+  outline: none;
+  padding: 0 24px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: .25px;
+  line-height: 36px;
+  margin-right: 36px;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(217, 61, 46);
+  &:hover {
+    background-color: rgba(217, 61, 46, 0.8);
+  }
+`
+
 const NavBarUserContainer = styled.div`
   position: relative;
   cursor: pointer;
@@ -162,8 +204,8 @@ const ProfileContainer = styled.div`
   justify-content: center;
   align-items: center;
   & > img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
   }
 `

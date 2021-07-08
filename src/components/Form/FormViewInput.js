@@ -6,7 +6,8 @@ import FormViewTextarea from './FormViewTextarea';
 const FormViewInput = ({
   type,
   value = '',
-  handleOnChangeText
+  handleOnChangeText,
+  isErrorActive
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -18,7 +19,7 @@ const FormViewInput = ({
         handleOnChangeText={handleOnChangeText}
         setIsFocused={setIsFocused}
       />
-      <FormInputBottomDefaultShadow />
+      <FormInputBottomDefaultShadow isErrorActive={isErrorActive} />
       <FormInputBottomActiveShadow active={isFocused} />
     </FormInputWrapper>
   )
@@ -39,7 +40,7 @@ const FormInputBottomDefaultShadow = styled.div`
   position: absolute;
   left: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.12);
+  background-color: ${props => props.isErrorActive ? 'rgb(219, 68, 55)' : 'rgba(0,0,0,0.12)'};
   height: 1px;
   width: 100%;
   margin: 0;
@@ -52,7 +53,7 @@ const FormInputBottomActiveShadow = styled.div`
   bottom:0px;
   left:0px;
   height:2px;
-  background-color: ${props => props.active ? 'rgb(219, 68, 55);' : 'rgba(0,0,0,0.1)'};
+  background-color: ${props => props.active ? 'rgb(219, 68, 55)' : 'rgba(0,0,0,0.1)'};
   transform: translateX(-50%);
   left:50%;
   transition:0.2s all linear;
