@@ -72,6 +72,7 @@ const Forms = () => {
 const FormsLayout = styled.div`
   width: 100%;
   min-height: 100vh;
+  background-color: rgb(250,227,225);
 `
 const FormsContainer = styled.div``
 

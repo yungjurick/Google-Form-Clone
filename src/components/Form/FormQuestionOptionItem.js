@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { uuid as newUid } from 'uuidv4'
 
 import { MdRadioButtonUnchecked, MdCheckBoxOutlineBlank, MdClose } from 'react-icons/md';
-import FormQuestionInput from './FormQuestionInput';
+import FormEditQuestionInput from './FormEditQuestionInput';
 
 const FormQuestionOptionItem = ({
   type,
@@ -37,7 +37,7 @@ const FormQuestionOptionItem = ({
           <OptionItemWrapper>
             {type === 'radio' && <MdRadioButtonUnchecked size="1.4em" color="rgba(0,0,0,0.26)"/>}
             {type === 'checkbox' && <MdCheckBoxOutlineBlank size="1.4em" color="rgba(0,0,0,0.26)"/>}
-            <FormQuestionInput
+            <FormEditQuestionInput
               size="small"
               target="label"
               value={label}

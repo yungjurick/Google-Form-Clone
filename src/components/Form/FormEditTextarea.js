@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const FormTextarea = ({
+const FormEditTextarea = ({
   target,
   size,
   value = '',
   placeholder,
   handleOnChangeQuestion,
-  setIsFocused
+  setIsFocused,
+  formType = 'edit'
 }) => {
   const textareaRef = useRef(null);
   const [textValue, setTextValue] = useState('');
@@ -38,13 +39,26 @@ const FormTextarea = ({
     }
   }, [textValue, size])
 
-  const handleOnBlur = () => {
+  const handleOnBlur = e => {
     setIsFocused(false);
+
+    // [Processing additional case of form-title]
+    // When the title is default-title and user onBlurs input after deleting the default-title,
+    // the problem was that since redux holds the same value -> it does not recognize as an update
+    // - (Since there is no change in the state/props)
+    // So -> manually setting the textvalue for this case.
+    if (
+      target === 'title' &&
+      value === 'No Named Form' &&
+      textValue === ''
+    ) {
+      return setTextValue(value);
+    }
 
     // Check if text-value has changed
     // If changed -> fire handleOnChangeQuestion
     if (value !== textValue) {
-      handleOnChangeQuestion(target, textValue)
+      return handleOnChangeQuestion(target, textValue);
     }
   }
 
@@ -56,7 +70,7 @@ const FormTextarea = ({
       placeholder={placeholder}
       onChange={e => setTextValue(e.target.value)}
       onFocus={e => setIsFocused(true)}
-      onBlur={e => handleOnBlur()}
+      onBlur={e => handleOnBlur(e)}
     />
   )
 }
@@ -92,4 +106,4 @@ const FormInputTextarea = styled.textarea`
   outline: none;
 `
 
-export default FormTextarea
+export default FormEditTextarea

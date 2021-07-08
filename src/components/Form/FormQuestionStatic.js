@@ -9,7 +9,7 @@ import {
   OptionsItem,
   OptionsItemText,
   TextResponse
-} from '../../styles/QuestionStatic'
+} from '../../styles/FormQuestion'
 
 const FormQuestionStatic = ({
   questionType,
@@ -52,7 +52,10 @@ const FormQuestionStatic = ({
       </Title>
       { 
         subtitle !== undefined &&
-        <Subtitle primary={questionType === 'form-title'}>
+        <Subtitle
+          primary={questionType === 'form-title'}
+          light={subtitle.length === 0}
+        >
           {subtitle.length > 0 ? subtitle : createDefaultValue(questionType, 'subtitle')}
         </Subtitle>
       }

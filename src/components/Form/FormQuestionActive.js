@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components';
 
-import FormInput from './FormInput';
-import FormQuestionInput from './FormQuestionInput';
+import FormEditInput from './FormEditInput';
+import FormEditQuestionInput from './FormEditQuestionInput';
 import FormQuestionTypeDropdown from './FormQuestionTypeDropdown';
 import FormQuestionOption from './FormQuestionOption';
 import FormQuestionAction from './FormQuestionAction';
@@ -24,13 +24,13 @@ const FormQuestionActive = ({
       {/* For Form Title And Description */}
       { questionType === 'form-title' && (
         <FormTitle>
-          <FormInput
+          <FormEditInput
             size="large"
             value={title}
             target="title"
             handleOnChangeQuestion={handleOnChangeQuestion}
           />
-          <FormInput
+          <FormEditInput
             size="small"
             value={subtitle}
             target="subtitle"
@@ -42,7 +42,7 @@ const FormQuestionActive = ({
       { questionType !== 'form-title' && (
         <Fragment>
           <FormQuestionTitle>
-            <FormQuestionInput
+            <FormEditQuestionInput
               size="small"
               value={title}
               target="title"
@@ -57,7 +57,7 @@ const FormQuestionActive = ({
           {
             subtitle !== undefined &&
             <FormQuestionSubtitleWrapper>
-              <FormQuestionInput
+              <FormEditQuestionInput
                 size="extrasmall"
                 value={subtitle}
                 target="subtitle"

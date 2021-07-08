@@ -94,16 +94,18 @@ const FormsList = () => {
               return (
                 <Fragment key={form.uuid}>
                   <ListHorizontalLine />
-                  <ListItem onClick={e => navigateToForm(form.uuid)}>
-                    <ListItemIcon>
-                      <MdInsertDriveFile size="1.3em" color="rgb(217, 61, 46)"/>
-                    </ListItemIcon>
-                    <ListItemText>
-                      <div>{form.title}</div>
-                    </ListItemText>
-                    <ListItemSubtext>
-                      Last Updated: {convertTimestampToDate(form.lastUpdated)}
-                    </ListItemSubtext>
+                  <ListItem>
+                    <ListItemWrapper onClick={e => navigateToForm(form.uuid)}>
+                      <ListItemIcon>
+                        <MdInsertDriveFile size="1.3em" color="rgb(217, 61, 46)"/>
+                      </ListItemIcon>
+                      <ListItemText>
+                        <div>{form.title}</div>
+                      </ListItemText>
+                      <ListItemSubtext>
+                        Last Updated: {convertTimestampToDate(form.lastUpdated)}
+                      </ListItemSubtext>
+                    </ListItemWrapper>
                     <ListItemOptionIcon>
                       <ListItemOptionIconWrapper>
                         <MdMoreVert size="1.3em" color="rgb(217, 61, 46)"/>
@@ -177,6 +179,11 @@ const ListItem = styled.div`
     border-radius: 8px;
   }
 `
+const ListItemWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+`
 const ListItemIcon = styled.div`
   display: flex;
   justify-content: center;
@@ -190,6 +197,7 @@ const ListItemOptionIcon = styled(ListItemIcon)`
   border: none;
   margin: 0;
   cursor: pointer;
+  z-index: 2;
 `
 
 const ListItemOptionIconWrapper = styled.div`

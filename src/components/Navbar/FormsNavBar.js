@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components'
+import { useSelector } from 'react-redux';
 import { MdInsertDriveFile, MdAccountCircle } from 'react-icons/md';
 
 const FormsNavBar = () => {
@@ -10,7 +11,18 @@ const FormsNavBar = () => {
   const splitPath = location.pathname.split('/');
   const formStatus = splitPath[splitPath.length - 1];
 
-  console.log(formUid);
+  const saveFormStatus = useSelector(state => state.form.saveFormStatus);
+  const [saveStatus, setSaveStatus] = useState('');
+
+  const saveStatusType = {
+    0: '',
+    1: 'Saving...',
+    2: 'All changes have been saved.'
+  }
+
+  useEffect(() => {
+    setSaveStatus(saveStatusType[saveFormStatus])
+  }, [saveFormStatus])
 
   const onClickTab = (status, formUid) => {
     push(`/forms/${formUid}/${status}`)
@@ -20,15 +32,17 @@ const FormsNavBar = () => {
     <NavBarContainer>
       <NavBarRow>
         <NavBarTitleContainer>
-          <MdInsertDriveFile size="2.8em" color="rgb(217, 61, 46)"/>
-          <NavBarTitle>
-            G-ooo-gle Form
+          <NavBarTitle onClick={e => push('/forms/')}>
+            <MdInsertDriveFile size="2.8em" color="rgb(217, 61, 46)"/>
+            <NavBarTitleText>
+              G-ooo-gle Form
+            </NavBarTitleText>
           </NavBarTitle>
-          <span>-</span>
+          <span>{saveStatus}</span>
         </NavBarTitleContainer>
         <NavBarUserContainer>
           <ProfileContainer>
-            <MdAccountCircle size="2.5em" color="rgb(217, 61, 46)"/>
+            <MdAccountCircle size="2em" color="rgb(217, 61, 46)"/>
           </ProfileContainer>
           <div></div>
         </NavBarUserContainer>
@@ -90,10 +104,24 @@ const NavBarTitleContainer = styled.div`
   align-items: center;
   & > span {
     padding-top: 6px;
-    padding-left: 15px;
-    font-size: 14px;
-    color: gray;
+    font-weight: 400;
+    letter-spacing: .3px;
+    line-height: 16px;
+    color: #5f6368;
+    cursor: default;
+    margin: 0 16px;
+    min-width: 80px;
+    width: 160px;
+    font-family: Roboto,Arial,sans-serif;
+    font-size: 12px;
   }
+`
+
+const NavBarTitle = styled.div`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `
 
 const NavBarUserContainer = styled.div`
@@ -122,7 +150,7 @@ const ProfileContainer = styled.div`
   align-items: center;
 `
 
-const NavBarTitle = styled.p`
+const NavBarTitleText = styled.p`
   font-size: 18px;
   padding-top: 2px;
   padding-left: 4px;
@@ -130,6 +158,9 @@ const NavBarTitle = styled.p`
   font-family: 'Product Sans',Arial,sans-serif;
   font-size: 22px;
   line-height: 24px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.5px;
 `
 
 const NavBarTabContainer = styled.div`

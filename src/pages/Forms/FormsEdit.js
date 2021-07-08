@@ -5,20 +5,50 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   setFormQuestions,
   setFormTitle,
-  setFormSubtitle
+  setFormSubtitle,
+  setSaveFormKey,
+  setSaveFormStatus
 } from '../../reducers/form';
+import { db, firebase } from '../../firebase';
 
 import FormQuestion from '../../components/Form/FormQuestion';
 import FormSidePanel from '../../components/Form/FormSidePanel';
 
 const FormsEdit = () => {
   const dispatch = useDispatch();
+  const form = useSelector(state => state.form.form);
+  const saveFormKey = useSelector(state => state.form.saveFormKey);
   const {
     uuid: formUid,
     title,
     subtitle,
     questions
-  } = useSelector(state => state.form.form);
+  } = form;
+
+  /* 
+    Save Status
+      1. Update Redux first
+      2. Then update firestore
+  */
+  useEffect(() => {
+    const updateForm = async (key, value) => {
+      const formRef = db.collection('forms').doc(formUid);
+      
+      dispatch(setSaveFormStatus(1));
+
+      await formRef.update({
+        [key]: value
+      })
+
+      dispatch(setSaveFormKey(''));
+      dispatch(setSaveFormStatus(2));
+    }
+
+    if (saveFormKey) {
+      console.log(saveFormKey);
+      updateForm(saveFormKey, form[saveFormKey]);
+    }
+  }, [saveFormKey])
 
   const createDefaultQuestion = () => {
     return {
@@ -26,15 +56,6 @@ const FormsEdit = () => {
       questionType: 'short-answer',
       title: '',
       isRequired: false
-    }
-  }
-
-  const formDetails = () => {
-    return {
-      uuid: formUid,
-      questionType: 'form-title',
-      title,
-      subtitle
     }
   }
 
@@ -88,7 +109,14 @@ const FormsEdit = () => {
       const keys = Object.keys(data);
       keys.forEach(key => {
         if (key === 'title') {
-          dispatch(setFormTitle(data[key]))
+
+          // Always make sure title is not an empty string
+          if (data[key] === '') {
+            dispatch(setFormTitle('No Named Form'))
+          } else {
+            dispatch(setFormTitle(data[key]))
+          }
+
         } else if (key === 'subtitle') {
           dispatch(setFormSubtitle(data[key]))
         }
@@ -117,14 +145,14 @@ const FormsEdit = () => {
     dispatch(setFormQuestions(cp));
   }
 
-  useEffect(() => {
-    if (questions.length === 0) {
-      console.log("Fill in Empty Questions")
-      const cp = [];
-      cp.push(createDefaultQuestion());
-      dispatch(setFormQuestions(cp));
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (questions.length === 0) {
+  //     console.log("Fill in Empty Questions")
+  //     const cp = [];
+  //     cp.push(createDefaultQuestion());
+  //     dispatch(setFormQuestions(cp));
+  //   }
+  // }, [])
 
   return (
     <FormQuestionsLayout>
@@ -133,7 +161,12 @@ const FormsEdit = () => {
         {/* Form Title And Description */}
         <FormQuestion
           isTitleAndDescription
-          questionData={formDetails()}
+          questionData={{
+            uuid: formUid,
+            questionType: 'form-title',
+            title,
+            subtitle
+          }}
           onClickQuestion={onClickQuestion}
           onChangeQuestion={onChangeQuestion}
           isActive={activeQuestionUid === formUid}
@@ -162,7 +195,6 @@ const FormsEdit = () => {
 const FormQuestionsLayout= styled.div`
   width: 100%;
   height: 100%;
-  background-color: rgb(250,227,225);
   padding-top: 14px;
 `
 
@@ -171,7 +203,8 @@ const FormQuestionsContainer = styled.div`
   margin: auto;
   padding-bottom: 64px;
   position: relative;
-  min-width: 360px;
+  max-width: 90vw;
+  width: 770px;
 `
 
 export default FormsEdit

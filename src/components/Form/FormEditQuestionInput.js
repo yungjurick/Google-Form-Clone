@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import FormTextarea from './FormTextarea';
+import FormTextarea from './FormEditTextarea';
 
-const FormQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
+const FormEditQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -103,4 +103,4 @@ const underline = keyframes`
   }
 `
 
-export default FormQuestionInput;
+export default FormEditQuestionInput;

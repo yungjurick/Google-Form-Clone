@@ -13,4 +13,5 @@ code {
 
 div, p {
   box-sizing: border-box;
+  word-wrap: break-word;
 }

@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Landing from './pages/Landing';
+import FormView from './pages/FormView';
 import Forms from './pages/Forms/Forms';
 import FormsList from './pages/Forms/FormsList';
 
@@ -23,7 +24,7 @@ class Routes extends React.Component {
           <Route path="/forms/:formUid" component={Forms}/>
 
           {/* Form for Users To Input Answers */}
-          {/* <Route exact path="/form/:formUid" component={}/> */}
+          <Route exact path="/viewform/:formUid" component={FormView}/>
         </Switch>
       </Router>
     )

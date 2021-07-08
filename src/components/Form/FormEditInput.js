@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
-import FormTextarea from './FormTextarea';
+import FormEditTextarea from './FormEditTextarea';
 
-const FormInput = ({
+const FormEditInput = ({
   size, 
   target,
   value = '',
@@ -28,7 +28,7 @@ const FormInput = ({
 
   return (
     <FormInputWrapper>
-      <FormTextarea
+      <FormEditTextarea
         target={target}
         size={size}
         value={value}
@@ -86,4 +86,4 @@ const underline = keyframes`
   100% {width:100%}
 `
 
-export default FormInput;
+export default FormEditInput;

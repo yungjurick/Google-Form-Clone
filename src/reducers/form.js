@@ -3,6 +3,8 @@ export const SET_DEFAULT_FORM = "SET_DEFAULT_FORM"
 export const SET_FORM_QUESTIONS = "SET_FORM_QUESTIONS"
 export const SET_FORM_TITLE = "SET_FORM_TITLE"
 export const SET_FORM_SUBTITLE = "SET_FORM_SUBTITLE"
+export const SET_SAVE_FORM_KEY = "SET_SAVE_FORM_KEY"
+export const SET_SAVE_FORM_STATUS = "SET_SAVE_FORM_STATUS"
 
 export const setForm = (form) => ({
   type: SET_FORM,
@@ -28,8 +30,20 @@ export const setFormSubtitle = (subtitle) => ({
   payload: subtitle
 })
 
+export const setSaveFormKey = (key) => ({
+  type: SET_SAVE_FORM_KEY,
+  payload: key
+})
+
+export const setSaveFormStatus = (status) => ({
+  type: SET_SAVE_FORM_STATUS,
+  payload: status
+})
+
 
 const initialState = {
+  saveFormKey: '',
+  saveFormStatus: 0,
   form: {
     uuid: '',
     creatorUid: '',
@@ -44,12 +58,15 @@ const form = (state = initialState, action) => {
   switch (action.type) {
     case SET_FORM:{
       return {
+        saveFormKey: '',
+        saveFormStatus: 0,
         form: action.payload,
       }
     }
 
     case SET_DEFAULT_FORM:{
       return {
+        ...state,
         form: {
           uuid: '',
           creatorUid: '',
@@ -63,6 +80,8 @@ const form = (state = initialState, action) => {
 
     case SET_FORM_QUESTIONS:{
       return {
+        ...state,
+        saveFormKey: 'questions',
         form: {
           ...state.form,
           questions: action.payload
@@ -72,6 +91,8 @@ const form = (state = initialState, action) => {
 
     case SET_FORM_TITLE:{
       return {
+        ...state,
+        saveFormKey: 'title',
         form: {
           ...state.form,
           title: action.payload
@@ -81,10 +102,26 @@ const form = (state = initialState, action) => {
 
     case SET_FORM_SUBTITLE:{
       return {
+        ...state,
+        saveFormKey: 'subtitle',
         form: {
           ...state.form,
           subtitle: action.payload
         }
+      }
+    }
+
+    case SET_SAVE_FORM_KEY:{
+      return {
+        ...state,
+        saveFormKey: action.payload
+      }
+    }
+
+    case SET_SAVE_FORM_STATUS:{
+      return {
+        ...state,
+        saveFormStatus: action.payload
       }
     }
 
