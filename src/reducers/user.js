@@ -8,7 +8,8 @@ export const setUserProfile = (userProfile) => ({
 const initialState = {
   userProfile: {
     uid: '',
-    nickname: ''
+    nickname: '',
+    photoUrl: ''
   }
 }
 

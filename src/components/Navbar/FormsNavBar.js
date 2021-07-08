@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components'
 import { useSelector } from 'react-redux';
-import { MdInsertDriveFile, MdAccountCircle } from 'react-icons/md';
+import { MdInsertDriveFile } from 'react-icons/md';
 
 const FormsNavBar = () => {
   const { push } = useHistory();
@@ -10,7 +10,7 @@ const FormsNavBar = () => {
   const location = useLocation();
   const splitPath = location.pathname.split('/');
   const formStatus = splitPath[splitPath.length - 1];
-
+  const { photoUrl } = useSelector(state => state.user.userProfile);
   const saveFormStatus = useSelector(state => state.form.saveFormStatus);
   const [saveStatus, setSaveStatus] = useState('');
 
@@ -42,7 +42,7 @@ const FormsNavBar = () => {
         </NavBarTitleContainer>
         <NavBarUserContainer>
           <ProfileContainer>
-            <MdAccountCircle size="2em" color="rgb(217, 61, 46)"/>
+            <img src={photoUrl} alt="profile"/>
           </ProfileContainer>
           <div></div>
         </NavBarUserContainer>
@@ -148,6 +148,11 @@ const ProfileContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  & > img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
 `
 
 const NavBarTitleText = styled.p`

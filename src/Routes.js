@@ -9,6 +9,7 @@ import Landing from './pages/Landing';
 import FormView from './pages/FormView';
 import Forms from './pages/Forms/Forms';
 import FormsList from './pages/Forms/FormsList';
+import FormViewSubmitSuccess from './pages/FormViewSubmitSuccess';
 
 class Routes extends React.Component {
   render() {
@@ -25,6 +26,7 @@ class Routes extends React.Component {
 
           {/* Form for Users To Input Answers */}
           <Route exact path="/viewform/:formUid" component={FormView}/>
+          <Route exact path="/viewform/:formUid/submit-success" component={FormViewSubmitSuccess}/>
         </Switch>
       </Router>
     )

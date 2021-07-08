@@ -93,7 +93,6 @@ const FormQuestionOption = ({
             />
           </Fragment>
         );
-        return;
       default:
         return;
     }

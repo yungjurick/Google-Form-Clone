@@ -5,6 +5,7 @@ export const SET_FORM_TITLE = "SET_FORM_TITLE"
 export const SET_FORM_SUBTITLE = "SET_FORM_SUBTITLE"
 export const SET_SAVE_FORM_KEY = "SET_SAVE_FORM_KEY"
 export const SET_SAVE_FORM_STATUS = "SET_SAVE_FORM_STATUS"
+export const SET_SUCCESS_FORM = "SET_SUCCESS_FORM"
 
 export const setForm = (form) => ({
   type: SET_FORM,
@@ -40,10 +41,19 @@ export const setSaveFormStatus = (status) => ({
   payload: status
 })
 
+export const setSuccessForm = (form) => ({
+  type: SET_SUCCESS_FORM,
+  payload: form
+})
+
 
 const initialState = {
   saveFormKey: '',
   saveFormStatus: 0,
+  successForm: {
+    uuid: '',
+    title: ''
+  },
   form: {
     uuid: '',
     creatorUid: '',
@@ -122,6 +132,13 @@ const form = (state = initialState, action) => {
       return {
         ...state,
         saveFormStatus: action.payload
+      }
+    }
+
+    case SET_SUCCESS_FORM: {
+      return {
+        ...state,
+        successForm: action.payload
       }
     }
 

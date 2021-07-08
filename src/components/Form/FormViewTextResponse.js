@@ -7,7 +7,8 @@ const FormViewTextResponse = ({
   questionType,
   questionUid,
   response,
-  onChangeResponse
+  onChangeResponse,
+  isErrorActive
 }) => {
   const handleOnChangeText = value => {
     onChangeResponse(questionUid, value);

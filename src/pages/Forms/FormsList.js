@@ -8,6 +8,7 @@ import { MdInsertDriveFile, MdMoreVert } from 'react-icons/md';
 
 import FormsNavBar from '../../components/Navbar/FormsNavBar';
 import { uuid } from 'uuidv4';
+import { setSaveFormKey, setSaveFormStatus } from '../../reducers/form';
 
 const FormsList = () => {
   const { uid: userUid } = useSelector(state => state.user.userProfile);
@@ -75,7 +76,15 @@ const FormsList = () => {
       dispatch(setLoading(false));
     }
 
-    getForms();
+    // Reset Save Status & Save Key
+    dispatch(setSaveFormStatus(0));
+    dispatch(setSaveFormKey(''));
+
+    if (userUid === '') {
+      history.push('/')
+    } else {
+      getForms();
+    }
   }, [])
 
   return (
@@ -118,6 +127,12 @@ const FormsList = () => {
             })
           }
         </List>
+        {
+          forms.length === 0 &&
+          <ListEmptyText>
+            You have no created forms. Create a new form to see the form here.
+          </ListEmptyText>
+        }
       </Container>
     </Layout>
 
@@ -161,6 +176,12 @@ const List = styled.div`
   flex-direction: column;
   align-items: center;
 `
+const ListEmptyText = styled.div`
+  padding-top: 32px;
+  padding-left: 16px;
+  font-weight: 600;
+`
+
 const ListHorizontalLine = styled.div`
   height: 0;
   border-top: 1px solid #e3e3e3;

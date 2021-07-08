@@ -6,7 +6,8 @@ const FormViewOptionResponse = ({
   questionUid,
   questionOptions,
   response,
-  onChangeResponse
+  onChangeResponse,
+  isRequired
 }) => {
   const handleChangeOption = (optionUid, arr) => {
     let temp = [];
@@ -30,28 +31,87 @@ const FormViewOptionResponse = ({
 
   const isChecked = (optionUid, arr) => arr.findIndex(r => r === optionUid) > -1;
 
-  return questionOptions.map(option => {
-    return (
-      <OptionResponse key={option.uuid}>
-        <RadioIcon
-          onClick={e => handleChangeOption(option.uuid, response)}
-        >
-          <RadioIconInk />
-          <RadioIconCircles
-            checked={isChecked(option.uuid, response)}
+  return (
+    <OptionResponseContainer>
+      {
+        questionOptions.map(option => {
+          return (
+            <OptionResponse key={option.uuid}>
+
+              <OptionIcon
+                onClick={e => handleChangeOption(option.uuid, response)}
+              >
+                <OptionIconInk />
+                {
+                  questionType === 'radio' &&
+                  <OptionIconCircles
+                    checked={isChecked(option.uuid, response)}
+                  >
+                    <div/>
+                  </OptionIconCircles>
+                }
+                {
+                  questionType === 'checkbox' &&
+                  <OptionIconCheckbox
+                    checked={isChecked(option.uuid, response)}
+                  >
+                    <OptionIconCheckmark>
+                      <div/>
+                      <div/>
+                    </OptionIconCheckmark>
+                  </OptionIconCheckbox>
+                }
+              </OptionIcon>
+
+              <FormViewOptionLabel>
+                <span>
+                  {option.label}
+                </span>
+              </FormViewOptionLabel>
+            </OptionResponse>
+          )
+        })
+      }
+      {
+        // If it's a required question, deselct functionality is disabled
+        !isRequired &&
+        <OptionResponseButtonRow>
+          <OptionResponseButton
+            show={response.length > 0}
+            onClick={e => onChangeResponse(questionUid, [])}
           >
-            <div/>
-          </RadioIconCircles>
-        </RadioIcon>
-        <FormViewOptionLabel>
-          <span>
-            {option.label}
-          </span>
-        </FormViewOptionLabel>
-      </OptionResponse>
-    )
-  })
+            Deselect
+          </OptionResponseButton>
+        </OptionResponseButtonRow>
+      }
+    </OptionResponseContainer>
+  )
 }
+
+const OptionResponseContainer = styled.div`
+  width: 100%;
+`
+
+const OptionResponseButtonRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`
+const OptionResponseButton = styled.div`
+  height: ${props => props.show ? '36px' : '0px'};
+  overflow: hidden;
+  padding: 0 8px;
+  transition: height 200ms cubic-bezier(0.4,0.0,0.2,1);
+  color: #5f6368;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: .25px;
+  line-height: 36px;
+  cursor: pointer;
+  border-radius: 4px;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+`
 
 const OptionResponse = styled.div`
   display: flex;
@@ -73,7 +133,7 @@ const FormViewOptionLabel = styled.div`
   }
 `
 
-const RadioIcon = styled.div`
+const OptionIcon = styled.div`
   position: relative;
   width: 20px;
   height: 20px;
@@ -87,7 +147,7 @@ const Flicker = keyframes`
   to { transform: translate(-50%, -50%) scale(1) }
 `
 
-const RadioIconInk = styled.div`
+const OptionIconInk = styled.div`
   width: 35px;
   height: 35px;
   position: absolute;
@@ -104,7 +164,7 @@ const RadioIconInk = styled.div`
   }
 `
 
-const RadioIconCircles = styled.div`
+const OptionIconCircles = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 50%;
@@ -121,6 +181,47 @@ const RadioIconCircles = styled.div`
     border: 5px solid;
     border-color: rgb(219,69,55);
     border-radius: 50%;
+  }
+`
+
+const OptionIconCheckbox = styled.div`
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  position: relative;
+  transition: border-color ease .28s, background-color ease .28s;
+  border: solid 2px;
+  border-color: ${props => props.checked ? 'rgb(219,69,55)' : '#5f6368'};
+  background-color: ${props => props.checked ? 'rgb(219,69,55)' : 'transparent'};
+`
+
+const OptionIconCheckmark = styled.div`
+  top: 6px;
+  left: 7px;
+  position: absolute;
+  transform: rotate(-45deg);
+  transform-origin: 0;
+  height: 100%;
+  pointer-events: none;
+  width: 100%;
+  border-color: ${props => props.checked ? 'rgb(219,69,55)' : 'transparent'};
+
+  & > div:first-child {
+    width: 2px;
+    height: 7px;
+    background-color: #fff;
+    border-width: 0;
+    left: 0;
+    position: absolute;
+  }
+  & > div:last-child {
+    width: 13px;
+    height: 2px;
+    background-color: #fff;
+    border-width: 0;
+    left: 0;
+    position: absolute;
+    top: 5px;
   }
 `
 

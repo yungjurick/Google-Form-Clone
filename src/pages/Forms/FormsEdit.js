@@ -37,7 +37,8 @@ const FormsEdit = () => {
       dispatch(setSaveFormStatus(1));
 
       await formRef.update({
-        [key]: value
+        [key]: value,
+        lastUpdated: firebase.firestore.Timestamp.now().seconds
       })
 
       dispatch(setSaveFormKey(''));
@@ -144,15 +145,6 @@ const FormsEdit = () => {
     delete cp[index][key]
     dispatch(setFormQuestions(cp));
   }
-
-  // useEffect(() => {
-  //   if (questions.length === 0) {
-  //     console.log("Fill in Empty Questions")
-  //     const cp = [];
-  //     cp.push(createDefaultQuestion());
-  //     dispatch(setFormQuestions(cp));
-  //   }
-  // }, [])
 
   return (
     <FormQuestionsLayout>

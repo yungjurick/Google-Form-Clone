@@ -10,21 +10,25 @@ import {
 } from 'react-icons/md'
 import { uuid } from 'uuidv4';
 
-const FormQuestionTypeDropdown = ({ isOptionsEmpty, questionType, handleOnChangeQuestion}) => {
+const FormQuestionTypeDropdown = ({
+  isOptionsEmpty,
+  questionType,
+  handleOnChangeQuestion
+}) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const questionTypeList = [
     {
       type: 'short-answer',
-      label: 'Short Answer',
+      label: 'Short answer',
     },
     {
       type: 'long-answer',
-      label: 'Long Answer',
+      label: 'Long answer',
     },
     {
       type: 'radio',
-      label: 'Radio',
+      label: 'Multiple Choice',
     },
     {
       type: 'checkbox',
@@ -32,8 +36,8 @@ const FormQuestionTypeDropdown = ({ isOptionsEmpty, questionType, handleOnChange
     }
   ]
 
-  const getTypeLabel = (questionType) => {
-    const filtered = questionTypeList.filter(item => item.type === questionType);
+  const getTypeLabel = (type) => {
+    const filtered = questionTypeList.filter(item => item.type === type);
     return filtered[0].label;
   }
 
@@ -46,6 +50,9 @@ const FormQuestionTypeDropdown = ({ isOptionsEmpty, questionType, handleOnChange
 
   const handleOnClickItem = (type, val) => {
     setIsDropdownOpen(false);
+
+    // If same type is clicked, ignore the click
+    if (questionType === val) return;
 
     const tempData = {
       [type]: val
@@ -60,8 +67,8 @@ const FormQuestionTypeDropdown = ({ isOptionsEmpty, questionType, handleOnChange
     handleOnChangeQuestion(tempData);
   }
 
-  const selectedTypeIcon = (questionType) => {
-    switch(questionType) {
+  const selectedTypeIcon = (type) => {
+    switch(type) {
       case 'short-answer':
         return <MdShortText size="1.7em"/>
       case 'long-answer':
