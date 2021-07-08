@@ -1,10 +1,16 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
 import styled from 'styled-components'
+import { firebaseApp } from '../../firebase';
+import { userLogOut } from '../../reducers';
 
 const ProfileDropdown = ({
   profileUrl,
   nickname
 }) => {
+  const { push } = useHistory();
+  const dispatch = useDispatch();
   const onImageError = img => {
     img.onerror = '';
     img.src = 'https://gravatar.com/avatar/f414c13ace4f77f9dbc7c609c78dafc3?s=400&d=identicon&r=x';
@@ -12,7 +18,9 @@ const ProfileDropdown = ({
   }
 
   const handleLogout = () => {
-
+    push('/');
+		firebaseApp.auth().signOut()
+		dispatch(userLogOut());
   }
 
   return (
