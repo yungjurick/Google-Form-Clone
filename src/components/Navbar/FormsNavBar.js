@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MdInsertDriveFile } from 'react-icons/md';
+import ProfileDropdown from '../Auth/ProfileDropdown';
+import { setProfileDropdownStatus } from '../../reducers/modal';
 
 const FormsNavBar = () => {
+  const dispatch = useDispatch();
   const { push } = useHistory();
   const { formUid } = useParams();
   const location = useLocation();
   const splitPath = location.pathname.split('/');
   const formStatus = splitPath[splitPath.length - 1];
-  const { photoUrl } = useSelector(state => state.user.userProfile);
+
+  const { photoUrl, nickname } = useSelector(state => state.user.userProfile);
   const saveFormStatus = useSelector(state => state.form.saveFormStatus);
+  const isProfileDropdownOpen = useSelector(state => state.modal.isProfileDropdownOpen);
+
   const [saveStatus, setSaveStatus] = useState('');
 
   const saveStatusType = {
@@ -40,7 +46,7 @@ const FormsNavBar = () => {
           </NavBarTitle>
           <span>{saveStatus}</span>
         </NavBarTitleContainer>
-        <NavBarUserContainer>
+        <NavBarUserContainer onClick={e => dispatch(setProfileDropdownStatus(!isProfileDropdownOpen))}>
           <ProfileContainer>
             <img src={photoUrl} alt="profile"/>
           </ProfileContainer>
@@ -68,6 +74,13 @@ const FormsNavBar = () => {
             </NavBarTabList>
           </NavBarTabContainer>
         </NavBarRow>
+      }
+      {
+        isProfileDropdownOpen &&
+        <ProfileDropdown
+          profileUrl={photoUrl}
+          nickname={nickname}
+        />
       }
       <NavBarContainerShadow />
     </NavBarContainer>
