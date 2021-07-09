@@ -4,14 +4,16 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setLoading } from '../../reducers/loading';
 import { db, firebase } from '../../firebase';
-import { MdInsertDriveFile, MdMoreVert } from 'react-icons/md';
+import { MdInsertDriveFile, MdDeleteForever } from 'react-icons/md';
 
 import FormsNavBar from '../../components/Navbar/FormsNavBar';
 import { uuid } from 'uuidv4';
 import { setSaveFormKey, setSaveFormStatus } from '../../reducers/form';
+import { setProfileDropdownStatus } from '../../reducers/modal';
 
 const FormsList = () => {
   const { uid: userUid } = useSelector(state => state.user.userProfile);
+  const isProfileDropdownOpen = useSelector(state => state.modal.isProfileDropdownOpen);
   const [forms, setForms] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -87,10 +89,16 @@ const FormsList = () => {
     }
   }, [])
 
+  const checkOpenedModal = () => {
+    if (isProfileDropdownOpen) {
+      dispatch(setProfileDropdownStatus(false));
+    }
+  }
+
   return (
     <Layout>
       <FormsNavBar />
-      <Container>
+      <Container onClick={e => checkOpenedModal()}>
         <ContainerTitle>
           <p>My Forms</p>
           <div onClick={e => addNewForm(userUid)}>
@@ -117,7 +125,7 @@ const FormsList = () => {
                     </ListItemWrapper>
                     <ListItemOptionIcon>
                       <ListItemOptionIconWrapper>
-                        <MdMoreVert size="1.3em" color="rgb(217, 61, 46)"/>
+                        <MdDeleteForever size="1.3em" color="rgb(217, 61, 46)"/>
                       </ListItemOptionIconWrapper>
                     </ListItemOptionIcon>
                   </ListItem>
@@ -149,6 +157,7 @@ const Container = styled.div`
   width: 80%;
   margin: 0 auto;
   padding-top: 70px;
+  min-height: 100vh;
 `
 const ContainerTitle = styled.div`
   margin: 0;
@@ -219,7 +228,7 @@ const ListItemOptionIcon = styled(ListItemIcon)`
   border: none;
   margin: 0;
   cursor: pointer;
-  z-index: 2;
+  z-index: 1;
 `
 
 const ListItemOptionIconWrapper = styled.div`

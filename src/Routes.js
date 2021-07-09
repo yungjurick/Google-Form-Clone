@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
+  Redirect
 } from 'react-router-dom';
 
 import Landing from './pages/Landing';
@@ -27,6 +28,10 @@ class Routes extends React.Component {
           {/* Form for Users To Input Answers */}
           <Route exact path="/viewform/:formUid" component={FormView}/>
           <Route exact path="/viewform/:formUid/submit-success" component={FormViewSubmitSuccess}/>
+
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
         </Switch>
       </Router>
     )

@@ -46,7 +46,7 @@ const SendFormModal = ({
         </ModalTitleRow>
         <ModalContent>
           <ModalContentTitle>
-            Link to Form
+            Copy Link
           </ModalContentTitle>
           <ModalContentLink>
             <input

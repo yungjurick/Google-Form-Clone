@@ -5,11 +5,24 @@ import Routes from './Routes';
 import Loading from './components/Loading/Loading'
 import reportWebVitals from './reportWebVitals';
 
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
+
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import configureStore from './config/store';
 const {store, persistor} = configureStore();
+
+Sentry.init({
+  dsn: "https://ef18171f32074cdfb1e45ac0b0dcdd10@o915774.ingest.sentry.io/5856355",
+  integrations: [new Integrations.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <Provider store={store}>

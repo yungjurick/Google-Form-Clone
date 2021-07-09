@@ -93,4 +93,8 @@ const FormQuestion = ({
   )
 }
 
-export default FormQuestion;
+const areEqual = (prevProps, nextProps) => {
+  return (prevProps.isActive === false && nextProps.isActive === false);
+}
+
+export default React.memo(FormQuestion, areEqual);

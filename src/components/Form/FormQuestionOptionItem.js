@@ -67,6 +67,9 @@ const OptionItem = styled.div`
   align-items: center;
   justify-content: ${props => props.showDelete ? 'space-between' : 'flex-start'};
   height: 48px;
+  & > svg {
+    cursor: pointer;
+  }
 `
 const OptionItemWrapper = styled.div`
   display: flex;
@@ -94,4 +97,4 @@ const OptionItemExtra = styled.div`
   }
 `
 
-export default FormQuestionOptionItem;
+export default FormQuestionOptionItem
