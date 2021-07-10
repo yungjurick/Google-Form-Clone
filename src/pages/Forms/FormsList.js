@@ -56,6 +56,23 @@ const FormsList = () => {
     dispatch(setLoading(false));
   }
 
+  const deleteForm = async (formUid) => {
+    dispatch(setLoading(true));
+    // Update State
+    const tempForms = [...forms];
+    const filtered = tempForms.filter(form => form.uuid !== formUid);
+    setForms(filtered);
+
+    // Update Firestore
+    // - Delete Form Doc
+    await db
+      .collection('forms')
+      .doc(formUid)
+      .delete();
+
+    dispatch(setLoading(false));
+  }
+
   const navigateToForm = formUid => {
     history.push(`/forms/${formUid}/edit`);
   }
@@ -125,7 +142,7 @@ const FormsList = () => {
                         Last Updated: {convertTimestampToDate(form.lastUpdated)}
                       </ListItemSubtext>
                     </ListItemWrapper>
-                    <ListItemOptionIcon>
+                    <ListItemOptionIcon onClick={e => deleteForm(form.uuid)}>
                       <ListItemOptionIconWrapper>
                         <MdDeleteForever size="1.3em" color="rgb(217, 61, 46)"/>
                       </ListItemOptionIconWrapper>
