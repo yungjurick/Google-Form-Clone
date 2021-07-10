@@ -149,6 +149,10 @@ const DropdownWrapper = styled.div`
   color: #202124;
   width: 180px;
   position: relative;
+  @media (max-width: 380px) {
+    margin-left: 0;
+    margin-top: 16px;
+  }
 `
 
 const DropdownList = styled.div`

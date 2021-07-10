@@ -96,6 +96,9 @@ const FormQuestionTitle = styled.div`
   align-items: flex-start;
   padding: 0 24px;
   margin-bottom: 16px;
+  @media (max-width: 380px) {
+    flex-direction: column;
+  }
 `
 
 const FormQuestionSubtitleWrapper = styled.div`

@@ -177,6 +177,9 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 70px;
   min-height: 100vh;
+  @media (max-width: 380px) {
+    min-width: 100%;
+  }
 `
 const ContainerTitle = styled.div`
   margin: 0;
@@ -280,6 +283,10 @@ const ListItemText = styled.div`
     vertical-align: top;
     white-space: nowrap;
   }
+  @media (max-width: 380px) {
+    font-size: 12px;
+    margin: 0 8px 0 0;
+  }
 `
 const ListItemSubtext = styled.p`
   margin: 0;
@@ -289,6 +296,13 @@ const ListItemSubtext = styled.p`
   margin-left: 0px;
   margin-right: 16px;
   font-size: 14px;
+  @media (max-width: 380px) {
+    font-size: 10px;
+    margin-right: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `
 
 export default FormsList

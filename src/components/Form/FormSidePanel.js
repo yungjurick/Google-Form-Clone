@@ -36,6 +36,16 @@ const SidePanelWrapper = styled.div`
   right: -62px;
   padding: 6px 0;
   transform: ${props => `translateY(${props.topValue}px)`};
+  @media (max-width: 380px) {
+    z-index: 2;
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    position: fixed;
+    top: calc(100% - 48px);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 `
 
 export default FormSidePanel

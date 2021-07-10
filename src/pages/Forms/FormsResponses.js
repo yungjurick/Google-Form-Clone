@@ -44,13 +44,19 @@ const FormsResponses = () => {
               responseObj[uid].questionType === 'radio' ||
               responseObj[uid].questionType === 'checkbox'
             ) {
-              responses[uid].forEach(optionUid => {
-                if (optionUid in responseObj[uid]['options']) {
-                  responseObj[uid]['options'][optionUid]['count'] += 1;
-                }
-              })
+              // Only accept array-ed answers
+              if (typeof responses[uid] === 'object') {
+                responses[uid].forEach(optionUid => {
+                  if (optionUid in responseObj[uid]['options']) {
+                    responseObj[uid]['options'][optionUid]['count'] += 1;
+                  }
+                })
+              }
             } else {
-              responseObj[uid]['responses'].push(responses[uid]);
+              // Only accept string answers
+              if (typeof responses[uid] === 'string') {
+                responseObj[uid]['responses'].push(responses[uid]);
+              }
             }
           }
         })

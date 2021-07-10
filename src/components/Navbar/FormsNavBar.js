@@ -146,6 +146,15 @@ const NavBarTitleContainer = styled.div`
     font-family: Roboto,Arial,sans-serif;
     font-size: 12px;
   }
+  @media (max-width: 380px) {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    & > span {
+      margin: 0 6px;
+      font-size: 10px;
+    }
+  }
 `
 
 const NavBarTitle = styled.div`
@@ -153,6 +162,12 @@ const NavBarTitle = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  @media (max-width: 380px) {
+    & > svg {
+      height: 25px;
+      width: 25px;
+    }
+  }
 `
 
 const NavBarActionContainer = styled.div`
@@ -176,6 +191,9 @@ const NavBarActionButton = styled.button`
   background-color: rgb(217, 61, 46);
   &:hover {
     background-color: rgba(217, 61, 46, 0.8);
+  }
+  @media (max-width: 380px) {
+    margin-right: 14px;
   }
 `
 
@@ -211,7 +229,6 @@ const ProfileContainer = styled.div`
 `
 
 const NavBarTitleText = styled.p`
-  font-size: 18px;
   padding-top: 2px;
   padding-left: 4px;
   color: #5f6368;
@@ -221,6 +238,10 @@ const NavBarTitleText = styled.p`
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.5px;
+  @media (max-width: 380px) {
+    font-size: 16px;
+    line-height: 18px;
+  }
 `
 
 const NavBarTabContainer = styled.div`
