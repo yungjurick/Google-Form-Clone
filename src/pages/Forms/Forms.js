@@ -28,6 +28,12 @@ const Forms = () => {
     const fetchFormData = async () => {
       dispatch(setLoading(true));
 
+      if (userUid === '') {
+        history.push('/');
+        dispatch(setLoading(false));
+        return;
+      }
+
       // Fetch Form
       try {
         const formRef = db
