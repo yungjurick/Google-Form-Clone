@@ -104,6 +104,13 @@ const FormView = () => {
 
     if (isValid) {
       dispatch(setLoading(true));
+      // Filter out empty values for non-required questions
+      Object.keys(formResponses).forEach(r => {
+        if (formResponses[r] === '' || formResponses[r] === []) {
+          delete formResponses[r];
+        }
+      })
+    
       try {
         await db
           .collection('responses')

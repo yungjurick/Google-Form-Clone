@@ -6,6 +6,7 @@ export const SET_FORM_SUBTITLE = "SET_FORM_SUBTITLE"
 export const SET_SAVE_FORM_KEY = "SET_SAVE_FORM_KEY"
 export const SET_SAVE_FORM_STATUS = "SET_SAVE_FORM_STATUS"
 export const SET_SUCCESS_FORM = "SET_SUCCESS_FORM"
+export const SET_FORM_RESPONSES = "SET_FORM_RESPONSES"
 
 export const setForm = (form) => ({
   type: SET_FORM,
@@ -46,6 +47,10 @@ export const setSuccessForm = (form) => ({
   payload: form
 })
 
+export const setFormResponses = (responses) => ({
+  type: SET_FORM_RESPONSES,
+  payload: responses
+})
 
 const initialState = {
   saveFormKey: '',
@@ -61,7 +66,8 @@ const initialState = {
     subtitle: '',
     lastUpdated: '',
     questions: []
-  }
+  },
+  formResponses: []
 }
 
 const form = (state = initialState, action) => {
@@ -71,6 +77,7 @@ const form = (state = initialState, action) => {
         saveFormKey: '',
         saveFormStatus: 0,
         form: action.payload,
+        formResponses: []
       }
     }
 
@@ -139,6 +146,13 @@ const form = (state = initialState, action) => {
       return {
         ...state,
         successForm: action.payload
+      }
+    }
+
+    case SET_FORM_RESPONSES:{
+      return {
+        ...state,
+        formResponses: action.payload
       }
     }
 

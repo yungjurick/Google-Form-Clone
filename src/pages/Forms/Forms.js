@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory, useParams, useLocation, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setForm } from '../../reducers/form';
+import { setForm, setFormResponses } from '../../reducers/form';
 import { setLoading } from '../../reducers/loading';
 import { db } from '../../firebase';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import FormsNavBar from '../../components/Navbar/FormsNavBar';
 import FormsEdit from './FormsEdit';
 import { setProfileDropdownStatus } from '../../reducers/modal';
 import SendFormModal from '../../components/Modal/SendFormModal';
+import FormsResponses from './FormsResponses';
 
 const Forms = () => {
   const { formUid } = useParams();
@@ -27,22 +28,45 @@ const Forms = () => {
     const fetchFormData = async () => {
       dispatch(setLoading(true));
 
-      const formRef = db
-        .collection('forms')
-        .doc(formUid)
-      const result = await formRef.get();
-      const formData = result.data();
+      // Fetch Form
+      try {
+        const formRef = db
+          .collection('forms')
+          .doc(formUid)
+        const result = await formRef.get();
 
-      console.log("Form Data: ", formData)
+        const formData = result.data();
+        console.log("Form Data: ", formData)
 
-      if (formData === undefined) {
-        alert('The form does not exist.');
+        if (formData === undefined) {
+          alert('The form does not exist.');
+          history.push('/forms/');
+        } else if (formData.creatorUid !== userUid) {
+          alert('Unauthorized Access: You are not the creator of the form');
+          history.push('/forms/');
+        } else {
+          dispatch(setForm(formData));
+        }
+      } catch (e) {
+        alert(e.message)
         history.push('/forms/');
-      } else if (formData.creatorUid !== userUid) {
-        alert('Unauthorized Access: You are not the creator of the form');
-        history.push('/forms/');
-      } else {
-        dispatch(setForm(formData));
+      }
+
+      // Fetch Form Responses
+      try {
+        const formResponsesRef = db
+          .collection('responses')
+          .where('formUid', '==', formUid)
+
+        const querySnapshot = await formResponsesRef.get();
+        const tempResponses = [];
+        querySnapshot.forEach((doc) => {
+          tempResponses.push(doc.data());
+        })
+
+        dispatch(setFormResponses(tempResponses));
+      } catch (e) {
+        console.log(e)
       }
 
       dispatch(setLoading(false));
@@ -72,7 +96,7 @@ const Forms = () => {
             <FormsEdit />
           </Route>
           <Route exact path="/forms/:formsUid/response">
-            WIP
+            <FormsResponses />
           </Route>
         </Switch>
       </FormsContainer>
