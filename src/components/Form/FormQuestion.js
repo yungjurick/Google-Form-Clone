@@ -94,7 +94,11 @@ const FormQuestion = ({
 }
 
 const areEqual = (prevProps, nextProps) => {
-  return (prevProps.isActive === false && nextProps.isActive === false);
+  console.log(prevProps.isActive === false && nextProps.isActive === false);
+  return (
+    (prevProps.isActive === false && nextProps.isActive === false) &&
+    (prevProps.questionData.uuid === nextProps.questionData.uuid)
+  );
 }
 
 export default React.memo(FormQuestion, areEqual);

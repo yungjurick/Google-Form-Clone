@@ -8,7 +8,7 @@ import { MdInsertDriveFile, MdDeleteForever } from 'react-icons/md';
 
 import FormsNavBar from '../../components/Navbar/FormsNavBar';
 import { uuid } from 'uuidv4';
-import { setSaveFormKey, setSaveFormStatus } from '../../reducers/form';
+import { setDefaultForm, setSaveFormKey, setSaveFormStatus } from '../../reducers/form';
 import { setProfileDropdownStatus } from '../../reducers/modal';
 
 const FormsList = () => {
@@ -52,6 +52,7 @@ const FormsList = () => {
       .doc(defaultForm.uuid)
       .set(defaultForm)
 
+    history.push(`/forms/${defaultForm.uuid}/edit`);
     dispatch(setLoading(false));
   }
 
@@ -78,7 +79,8 @@ const FormsList = () => {
       dispatch(setLoading(false));
     }
 
-    // Reset Save Status & Save Key
+    // Reset Selected Form & Save Status & Save Key
+    dispatch(setDefaultForm());
     dispatch(setSaveFormStatus(0));
     dispatch(setSaveFormKey(''));
 
