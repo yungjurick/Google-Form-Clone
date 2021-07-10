@@ -15,6 +15,7 @@ const FormQuestionActive = ({
   handleOnChangeQuestion,
   handleOnCopyQuestion,
   handleOnDeleteQuestion,
+  handleOnMoveQuestion,
   handleOnChangeSubtitle,
   handleOnChangeIsRequired,
   options,
@@ -43,7 +44,7 @@ const FormQuestionActive = ({
         <Fragment>
           <FormQuestionTitle>
             <FormEditQuestionInput
-              size="small"
+              size="medium"
               value={title}
               target="title"
               handleOnChangeQuestion={handleOnChangeQuestion}
@@ -77,6 +78,7 @@ const FormQuestionActive = ({
             handleOnCopyQuestion={handleOnCopyQuestion}
             handleOnChangeSubtitle={handleOnChangeSubtitle}
             handleOnChangeIsRequired={handleOnChangeIsRequired}
+            handleOnMoveQuestion={handleOnMoveQuestion}
           />
         </Fragment>
       )}

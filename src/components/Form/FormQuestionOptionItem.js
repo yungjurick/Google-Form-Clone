@@ -4,6 +4,7 @@ import { uuid as newUid } from 'uuidv4'
 
 import { MdRadioButtonUnchecked, MdCheckBoxOutlineBlank, MdClose } from 'react-icons/md';
 import FormEditQuestionInput from './FormEditQuestionInput';
+import Button from '../Common/Button';
 
 const FormQuestionOptionItem = ({
   type,
@@ -44,7 +45,16 @@ const FormQuestionOptionItem = ({
               handleOnChangeQuestion={handleOnChangeOption}
             />
           </OptionItemWrapper>
-          {showDelete && <MdClose size="1.4em" color="rgba(0,0,0,0.6)" onClick={e => handleDeleteOption(uuid)} />}
+          {
+            showDelete &&
+            <Button
+              size="medium"
+              label="Delete"
+              tooltipLocation="bottom"
+              imgComponent={<MdClose size="1.4em" color="rgba(0,0,0,0.26)" />}
+              onClickHandler={() => handleDeleteOption(uuid)}
+            />
+          }
         </Fragment>
       }
       {

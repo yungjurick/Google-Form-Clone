@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import {
   MdContentCopy,
   MdDelete,
-  MdAssignment
+  MdAssignment,
+  MdExpandMore,
+  MdExpandLess
 } from 'react-icons/md';
 
 import FormToggle from './FormToggle';
@@ -14,11 +16,35 @@ const FormQuestionAction = ({
   handleOnCopyQuestion,
   handleOnDeleteQuestion,
   handleOnChangeSubtitle,
-  handleOnChangeIsRequired
+  handleOnChangeIsRequired,
+  handleOnMoveQuestion
 }) => {
+  const onMoveUpQuestion = () => {
+    handleOnMoveQuestion('up')
+  }
+
+  const onMoveDownQuestion = () => {
+    handleOnMoveQuestion('down')
+  }
+
   return (
     <FormQuestionActionContainer>
       <FormQuestionActionItemList>
+        <Button
+          size="medium"
+          label="Move Up"
+          tooltipLocation="bottom"
+          imgComponent={<MdExpandLess size="1.35em" color="rgb(0, 0, 0, 0.55)" />}
+          onClickHandler={onMoveUpQuestion}
+        />
+        <Button
+          size="medium"
+          label="Move Down"
+          tooltipLocation="bottom"
+          imgComponent={<MdExpandMore size="1.35em" color="rgb(0, 0, 0, 0.55)" />}
+          onClickHandler={onMoveDownQuestion}
+        />
+        <FormQuestionHorizontalLine/>
         <Button
           size="medium"
           label="Copy"

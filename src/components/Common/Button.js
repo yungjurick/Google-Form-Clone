@@ -98,7 +98,7 @@ const ButtonBackground = styled.div`
 
 const ButtonTooltip = styled.div`
   position: absolute;
-  width: auto;
+  width: max-content;
   display: ${props => props.isHovered ? 'block' : 'none'};
   padding: 4px;
   background-color: black;

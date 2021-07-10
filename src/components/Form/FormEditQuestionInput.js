@@ -70,7 +70,8 @@ const FormInputBottomDefaultShadow = styled.div`
       return 'block';
     }
   }};
-  left: 0;
+  transform: translateX(-50%);
+  left:50%;
   bottom: 0;
   background-color: ${props => props.target === 'title' ? '#80868b' : 'rgba(0,0,0,0.12)'};
   height: 1px;
@@ -82,7 +83,6 @@ const FormInputBottomDefaultShadow = styled.div`
 const FormInputBottomActiveShadow = styled.div`
   position:absolute;
   bottom:0px;
-  left:0px;
   height:2px;
   background-color: ${props => props.active ? 'rgb(219, 68, 55);' : 'rgba(0,0,0,0.1)'};
   transform: translateX(-50%);

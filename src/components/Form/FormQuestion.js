@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import FormQuestionActive from './FormQuestionActive';
 import FormQuestionStatic from './FormQuestionStatic';
 import {
@@ -8,20 +8,28 @@ import {
 } from '../../styles/FormQuestion'
 
 const FormQuestion = ({
+  index = -1,
   questionData,
   onClickQuestion,
   onChangeQuestion,
   onCopyQuestion,
-  onDeleteQuestion,
+  onMoveQuestion,
   onDeleteQuestionKey,
+  onDeleteQuestion,
+  onActiveQuestion,
   isActive,
 }) => {
-
+  const questionRef = useRef(null);
   const { uuid, questionType, title, isRequired } = questionData;
   const subtitle = questionData.subtitle;
   const options = (questionData.options || []);
 
-  console.log(questionData);
+  useEffect(() => {
+    console.log("isActive", isActive, uuid);
+    if (isActive) {
+      onActiveQuestion(questionRef);
+    }
+  }, [isActive, index])
 
   const handleOnChangeQuestion = (data) => {
     onChangeQuestion(uuid, data);
@@ -41,6 +49,10 @@ const FormQuestion = ({
     onDeleteQuestion(uuid)
   }
 
+  const handleOnMoveQuestion = direction => {
+    onMoveQuestion(uuid, direction);
+  }
+
   const handleOnChangeSubtitle = () => {
     if (subtitle === undefined) {
       onChangeQuestion(uuid, {
@@ -51,10 +63,13 @@ const FormQuestion = ({
     }
   }
 
+  console.log(title, subtitle)
+
   return (
     <FormQuestionWrapper
+      ref={questionRef}
       isActive={isActive}
-      onClick={e => onClickQuestion(e, uuid)}
+      onClick={e => onClickQuestion(uuid)}
     >
       {
         isActive
@@ -67,6 +82,7 @@ const FormQuestion = ({
           handleOnChangeQuestion={handleOnChangeQuestion}
           handleOnCopyQuestion={handleOnCopyQuestion}
           handleOnDeleteQuestion={handleOnDeleteQuestion}
+          handleOnMoveQuestion={handleOnMoveQuestion}
           handleOnChangeSubtitle={handleOnChangeSubtitle}
           handleOnChangeIsRequired={handleOnChangeIsRequired}
           options={options}
@@ -94,10 +110,12 @@ const FormQuestion = ({
 }
 
 const areEqual = (prevProps, nextProps) => {
-  console.log(prevProps.isActive === false && nextProps.isActive === false);
   return (
     (prevProps.isActive === false && nextProps.isActive === false) &&
-    (prevProps.questionData.uuid === nextProps.questionData.uuid)
+    prevProps.questionData.uuid === nextProps.questionData.uuid &&
+    prevProps.questionData.title === nextProps.questionData.title &&
+    prevProps.questionData.subtitle === nextProps.questionData.subtitle &&
+    prevProps.index === nextProps.index
   );
 }
 

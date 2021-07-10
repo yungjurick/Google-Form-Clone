@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const FormEditTextarea = ({
   target,
   size,
-  value = '',
+  value,
   placeholder,
   handleOnChangeQuestion,
   setIsFocused
 }) => {
   const textareaRef = useRef(null);
-  const [textValue, setTextValue] = useState('');
+  const [textValue, setTextValue] = useState(' ');
 
   useEffect(() => {
     setTextValue(value);

@@ -16,14 +16,15 @@ import FormSidePanel from '../../components/Form/FormSidePanel';
 
 const FormsEdit = () => {
   const dispatch = useDispatch();
+
   const form = useSelector(state => state.form.form);
   const saveFormKey = useSelector(state => state.form.saveFormKey);
-  const {
-    uuid: formUid,
-    title,
-    subtitle,
-    questions
-  } = form;
+
+  const [activeQuestionRef, setActiveQuestionRef] = useState(null);
+  const [activeQuestionUid, setActiveQuestionUid] = useState(null);
+  const [panelTopValue, setPanelTopValue] = useState(0);
+
+  const [newActiveUid, setNewActiveUid] = useState('');
 
   /* 
     Save Status
@@ -32,7 +33,7 @@ const FormsEdit = () => {
   */
   useEffect(() => {
     const updateForm = async (key, value) => {
-      const formRef = db.collection('forms').doc(formUid);
+      const formRef = db.collection('forms').doc(form.uuid);
       
       dispatch(setSaveFormStatus(1));
 
@@ -46,10 +47,22 @@ const FormsEdit = () => {
     }
 
     if (saveFormKey) {
-      console.log(saveFormKey);
+      console.log("Saving Target:", saveFormKey);
       updateForm(saveFormKey, form[saveFormKey]);
     }
   }, [saveFormKey])
+
+  useEffect(() => {
+    if (activeQuestionRef && activeQuestionRef.current) {
+      setPanelTopValue(activeQuestionRef.current.offsetTop);
+    }
+  }, [activeQuestionRef, activeQuestionUid, form.questions])
+
+  useEffect(() => {
+    if (newActiveUid) {
+      setActiveQuestionUid(newActiveUid);
+    }
+  }, [newActiveUid])
 
   const createDefaultQuestion = () => {
     return {
@@ -60,53 +73,71 @@ const FormsEdit = () => {
     }
   }
 
-  const [activeQuestionUid, setActiveQuestionUid] = useState(null);
-
-  const onClickQuestion = (e, uuid) => {
-    setActiveQuestionUid(uuid)
+  const onClickQuestion = (uuid) => {
+    setActiveQuestionUid(uuid);
   };
 
-  const onClickPanelButton = buttonType => {
+  const onActiveQuestion = (ref) => {
+    setActiveQuestionRef(ref);
+  }
+
+  const onClickPanelButton = (buttonType) => {
     switch(buttonType) {
       case 'add':
         const newQuestion = createDefaultQuestion();
-        onAddQuestion(activeQuestionUid, newQuestion);
+        onAddQuestion(activeQuestionUid, newQuestion, true);
         return;
       default:
         return;
     }
   }
 
-  const onAddQuestion = (baseQuestionUid, data) => {
-    const cp = [...questions];
+  const onAddQuestion = (baseQuestionUid, data, placeAfter = false) => {
+    const cp = [...form.questions];
 
-    console.log(data);
+    console.log("[Add New Question]", {
+      baseQuestionUid,
+      data,
+      placeAfter,
+      cp
+    })
 
-    // If Base Question Uid is given
-    if (baseQuestionUid) {
+    // If Base Question Uid is within questions
+    if (baseQuestionUid && baseQuestionUid !== form.uuid) {
       const index = cp.findIndex(q => q.uuid === baseQuestionUid);
-      dispatch(setFormQuestions([
-        ...cp.slice(0, index),
-        data,
-        ...cp.slice(index)
-      ]));
+      if (placeAfter) {
+        dispatch(setFormQuestions([
+          ...cp.slice(0, index+1),
+          data,
+          ...cp.slice(index+1)
+        ]));
+      } else {
+        dispatch(setFormQuestions([
+          ...cp.slice(0, index),
+          data,
+          ...cp.slice(index)
+        ]));
+      }
 
-    // If Base Question Uid is not given - add at the last index
+    // Add at the first index
     } else {
-      cp.push(data);
-      dispatch(setFormQuestions(cp));
+      dispatch(setFormQuestions([
+        data,
+        ...cp
+      ]));
     }
+
+    setNewActiveUid(data.uuid);
   }
 
   const onCopyQuestion = (questionUid) => {
-    const index = questions.findIndex(q => q.uuid === questionUid);
-    console.log(questionUid, questions, questions[index]);
-    onAddQuestion(questionUid, { ...questions[index], uuid: uuid() });
+    const index = form.questions.findIndex(q => q.uuid === questionUid);
+    onAddQuestion(questionUid, { ...form.questions[index], uuid: uuid() });
   }
 
   const onChangeQuestion = (questionUid, data) => {
     // On Change Form Title or Form Subtitle
-    if (questionUid === formUid) {
+    if (questionUid === form.uuid) {
       const keys = Object.keys(data);
       keys.forEach(key => {
         if (key === 'title') {
@@ -126,59 +157,97 @@ const FormsEdit = () => {
     // On Change Question Key-Val
     } else {
       console.log("FormsEdit - On Change Question: ", questionUid, data);
-      const cp = [...questions];
+      const cp = [...form.questions];
       const index = cp.findIndex(q => q.uuid === questionUid);
       cp[index] = { ...cp[index], ...data };
-      console.log(cp);
       dispatch(setFormQuestions(cp));
     }
   }
 
-  const onDeleteQuestion = (questionUid) => {
-    const cp = [...questions];
-    const filtered = cp.filter(q => q.uuid !== questionUid);
-    dispatch(setFormQuestions(filtered));
-  }
   const onDeleteQuestionKey = (questionUid, key) => {
-    const cp = [...questions];
+    const cp = [...form.questions];
     const index = cp.findIndex(q => q.uuid === questionUid);
     delete cp[index][key]
+    dispatch(setFormQuestions(cp));
+  }
+
+  const onDeleteQuestion = (questionUid) => {
+    const cp = [...form.questions];
+    const index = cp.findIndex(q => q.uuid === questionUid);
+    let newActiveUid;
+
+    if (index === 0) {
+      newActiveUid = form.uuid;
+    } else {
+      newActiveUid = cp[index-1].uuid
+    }
+
+    const filtered = cp.filter(q => q.uuid !== questionUid);
+    dispatch(setFormQuestions(filtered));
+
+    setNewActiveUid(newActiveUid);
+  }
+
+  const onMoveQuestion = (questionUid, direction) => {
+    const cp = [...form.questions];
+    const index = cp.findIndex(q => q.uuid === questionUid);
+    const temp = { ...cp[index] };
+
+    if (direction === 'up' && index !== 0) {
+      cp[index] = { ...cp[index-1] };
+      cp[index-1] = temp;
+    } else if (direction === 'down' && index !== (cp.length - 1)) {
+      cp[index] = { ...cp[index+1] };
+      cp[index+1] = temp;
+    } else {
+      return;
+    }
+
     dispatch(setFormQuestions(cp));
   }
 
   return (
     <FormQuestionsLayout>
       <FormQuestionsContainer>
-        <FormSidePanel onClickPanelButton={onClickPanelButton}/>
-        {/* Form Title And Description */}
-        <FormQuestion
-          isTitleAndDescription
-          questionData={{
-            uuid: formUid,
-            questionType: 'form-title',
-            title,
-            subtitle
-          }}
-          onClickQuestion={onClickQuestion}
-          onChangeQuestion={onChangeQuestion}
-          isActive={activeQuestionUid === formUid}
+        <FormSidePanel
+          topValue={panelTopValue}
+          onClickPanelButton={onClickPanelButton}
         />
-        {
-          questions.map(q => {
-            return (
-              <FormQuestion
-                key={q.uuid}
-                questionData={q}
-                onClickQuestion={onClickQuestion}
-                onChangeQuestion={onChangeQuestion}
-                onCopyQuestion={onCopyQuestion}
-                onDeleteQuestion={onDeleteQuestion}
-                onDeleteQuestionKey={onDeleteQuestionKey}
-                isActive={activeQuestionUid === q.uuid}
-              />
-            )
-          })
-        }
+        {/* Form Title And Description */}
+        <FormQuestionList>
+          <FormQuestion
+            isTitleAndDescription
+            questionData={{
+              uuid: form.uuid,
+              questionType: 'form-title',
+              title: form.title,
+              subtitle: form.subtitle
+            }}
+            onClickQuestion={onClickQuestion}
+            onChangeQuestion={onChangeQuestion}
+            onActiveQuestion={onActiveQuestion}
+            isActive={activeQuestionUid === form.uuid}
+          />
+          {
+            form.questions.map((q, i) => {
+              return (
+                <FormQuestion
+                  key={q.uuid}
+                  index={i}
+                  questionData={q}
+                  onClickQuestion={onClickQuestion}
+                  onChangeQuestion={onChangeQuestion}
+                  onCopyQuestion={onCopyQuestion}
+                  onDeleteQuestionKey={onDeleteQuestionKey}
+                  onDeleteQuestion={onDeleteQuestion}
+                  onMoveQuestion={onMoveQuestion}
+                  onActiveQuestion={onActiveQuestion}
+                  isActive={activeQuestionUid === q.uuid}
+                />
+              )
+            })
+          }
+        </FormQuestionList>
       </FormQuestionsContainer>
     </FormQuestionsLayout>
   )
@@ -197,6 +266,11 @@ const FormQuestionsContainer = styled.div`
   position: relative;
   max-width: 90vw;
   width: 770px;
+`
+
+const FormQuestionList = styled.div`
+  width: 100%;
+  height: 100%;
 `
 
 export default FormsEdit

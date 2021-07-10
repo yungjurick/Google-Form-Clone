@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body {
   margin: 0;
-  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-family: Roboto, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #202124;
