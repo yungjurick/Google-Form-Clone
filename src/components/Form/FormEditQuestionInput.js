@@ -1,9 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import FormEditTextarea from './FormEditTextarea';
 
-const FormEditQuestionInput = ({ size, target, value, handleOnChangeQuestion }) => {
+const FormEditQuestionInput = ({
+  size,
+  target,
+  value,
+  handleOnChangeQuestion,
+  addNewOption
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -36,6 +42,7 @@ const FormEditQuestionInput = ({ size, target, value, handleOnChangeQuestion }) 
         value={value}
         placeholder={textareaPlaceholder(target)}
         handleOnChangeQuestion={handleOnChange}
+        addNewOption={addNewOption}
         setIsFocused={setIsFocused}
       />
       <FormInputBottomDefaultShadow target={target} isHovered={isHovered} />

@@ -17,8 +17,15 @@ const FormQuestionOption = ({
     handleOnChangeQuestion({ 'options': cp });
   }
 
-  const handleAddOption = (data) => {
+  const handleAddOption = (data, key = '', index = -1) => {
     const cp = [...options];
+
+    console.log(key, index);
+
+    if (key === 'Tab' && index !== options.length - 1) {
+      return;
+    }
+
     cp.push({
       ...data,
       label: `Option ${options.length + 1}`
@@ -46,13 +53,15 @@ const FormQuestionOption = ({
       case 'long-answer':
         return <TextAnswerOption long>Long Answer Text</TextAnswerOption>;
       case 'checkbox':
-        const checkboxes = options.map(option => {
+        const checkboxes = options.map((option, i) => {
           return (
             <FormQuestionOptionItem
               key={option.uuid}
+              index={i}
               type="checkbox"
               option={option}
               showDelete={options.length > 1}
+              handleAddOption={handleAddOption}
               handleOnChangeQuestion={handleOnChangeOption}
               handleDeleteOption={handleDeleteOption}
             />
@@ -70,13 +79,15 @@ const FormQuestionOption = ({
           </Fragment>
         );
       case 'radio':
-        const radios = options.map(option => {
+        const radios = options.map((option, i) => {
           return (
             <FormQuestionOptionItem
               key={option.uuid}
+              index={i}
               type="radio"
               option={option}
               showDelete={options.length > 1}
+              handleAddOption={handleAddOption}
               handleOnChangeQuestion={handleOnChangeOption}
               handleDeleteOption={handleDeleteOption}
             />

@@ -8,6 +8,7 @@ import Button from '../Common/Button';
 
 const FormQuestionOptionItem = ({
   type,
+  index = -1,
   option,
   handleOnChangeQuestion,
   isExtra = false,
@@ -21,13 +22,13 @@ const FormQuestionOptionItem = ({
     handleOnChangeQuestion(uuid, data);
   }
 
-  const addNewOption = () => {
+  const addNewOption = (key = '') => {
     const newOption = {
       uuid: newUid(),
       label: ''
     }
 
-    handleAddOption(newOption);
+    handleAddOption(newOption, key, index);
   }
 
   return (
@@ -42,6 +43,7 @@ const FormQuestionOptionItem = ({
               size="small"
               target="label"
               value={label}
+              addNewOption={addNewOption}
               handleOnChangeQuestion={handleOnChangeOption}
             />
           </OptionItemWrapper>

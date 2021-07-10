@@ -41,26 +41,28 @@ const FormViewOptionResponse = ({
               <OptionIcon
                 onClick={e => handleChangeOption(option.uuid, response)}
               >
-                <OptionIconInk />
-                {
-                  questionType === 'radio' &&
-                  <OptionIconCircles
-                    checked={isChecked(option.uuid, response)}
-                  >
-                    <div/>
-                  </OptionIconCircles>
-                }
-                {
-                  questionType === 'checkbox' &&
-                  <OptionIconCheckbox
-                    checked={isChecked(option.uuid, response)}
-                  >
-                    <OptionIconCheckmark>
+                <OptionIconWrapper>
+                  <OptionIconInk />
+                  {
+                    questionType === 'radio' &&
+                    <OptionIconCircles
+                      checked={isChecked(option.uuid, response)}
+                    >
                       <div/>
-                      <div/>
-                    </OptionIconCheckmark>
-                  </OptionIconCheckbox>
-                }
+                    </OptionIconCircles>
+                  }
+                  {
+                    questionType === 'checkbox' &&
+                    <OptionIconCheckbox
+                      checked={isChecked(option.uuid, response)}
+                    >
+                      <OptionIconCheckmark>
+                        <div/>
+                        <div/>
+                      </OptionIconCheckmark>
+                    </OptionIconCheckbox>
+                  }
+                </OptionIconWrapper>
               </OptionIcon>
 
               <FormViewOptionLabel>
@@ -147,6 +149,15 @@ const Flicker = keyframes`
   to { transform: translate(-50%, -50%) scale(1) }
 `
 
+const OptionIconWrapper = styled.div`
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const OptionIconInk = styled.div`
   width: 35px;
   height: 35px;
@@ -165,8 +176,8 @@ const OptionIconInk = styled.div`
 `
 
 const OptionIconCircles = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: solid 2px;
   transition: border-color ease .28s;
@@ -185,8 +196,8 @@ const OptionIconCircles = styled.div`
 `
 
 const OptionIconCheckbox = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
   border-radius: 3px;
   position: relative;
   transition: border-color ease .28s, background-color ease .28s;

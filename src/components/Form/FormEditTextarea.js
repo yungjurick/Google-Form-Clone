@@ -7,6 +7,7 @@ const FormEditTextarea = ({
   value,
   placeholder,
   handleOnChangeQuestion,
+  addNewOption = () => {},
   setIsFocused
 }) => {
   const textareaRef = useRef(null);
@@ -64,8 +65,16 @@ const FormEditTextarea = ({
 
   // Clear entry with Escape Key
   const handleKeyDown = (key) => {
+    console.log(target);
+    console.log(key);
+    // ESC Key Press to clear out field
     if (key === 'Escape') {
       setTextValue('');
+    }
+
+    // Tab Key Press (for option item) to add new option
+    if (key === 'Tab' && target === 'label') {
+      addNewOption(key);
     }
   }
 
