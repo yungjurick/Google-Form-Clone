@@ -146,7 +146,7 @@ const NavBarTitleContainer = styled.div`
     font-family: Roboto,Arial,sans-serif;
     font-size: 12px;
   }
-  @media (max-width: 380px) {
+  @media (max-width: 425px) {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
@@ -162,7 +162,7 @@ const NavBarTitle = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  @media (max-width: 380px) {
+  @media (max-width: 425px) {
     & > svg {
       height: 25px;
       width: 25px;
@@ -192,7 +192,7 @@ const NavBarActionButton = styled.button`
   &:hover {
     background-color: rgba(217, 61, 46, 0.8);
   }
-  @media (max-width: 380px) {
+  @media (max-width: 425px) {
     margin-right: 14px;
   }
 `
@@ -238,7 +238,7 @@ const NavBarTitleText = styled.p`
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   letter-spacing: -0.5px;
-  @media (max-width: 380px) {
+  @media (max-width: 425px) {
     font-size: 16px;
     line-height: 18px;
   }
